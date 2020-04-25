@@ -1,0 +1,33 @@
+# Remove all .log, .synctex.gx, .fdb_latexmk, .aux and .fls files
+#**/*.pdf
+**/*.log
+**/*.synctex.gz
+**/*.synctex(busy)
+**/*.fdb_latexmk
+**/*.aux
+**/*.fls
+**/*.pre
+**/*.out
+**/*.aux
+# Remove ExFAT nonsense as well
+**/._*.pdf
+Fall\ 2018/CMPT\ 260/27/10\ dump/*
+# Remove MacOS nonsense
+**/*.DS_Store
+**/*.ipynb_checkpoints/
+**/._*
+# Remove XeLaTeX stuff
+**/*.xdv
+# Remove Beamer stuff
+**/*.nav
+**/*.snm
+**/*.toc
+# Remove TikZ externalization stuff (but leave PDFs intact)
+**/*-figure*.md5
+**/*.dpth
+
+# Remove PythonTeX stuff
+**/*.pytxcode
+**/pythontex-files*
+
+**/.DS_Store
