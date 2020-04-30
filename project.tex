@@ -20,24 +20,25 @@
 %
 \documentclass[%
  % reprint,
-%superscriptaddress,
-%groupedaddress,
-%unsortedaddress,
-%runinaddress,
-%frontmatterverbose,
-preprint,
-%preprintnumbers,
-%nofootinbib,
-%nobibnotes,
-%bibnotes,
+% superscriptaddress,
+% groupedaddress,
+% unsortedaddress,
+% runinaddress,
+% frontmatterverbose,
+ preprint,
+% preprintnumbers,
+% nofootinbib,
+% nobibnotes,
+% bibnotes,
  amsmath,amssymb,
  aps,
  pra,
 % prb,
-%rmp,
-%prstab,
-%prstper,
-%floatfix,
+% rmp,
+% prstab,
+% prstper,
+% floatfix,
+ fleqn
 ]{revtex4-2}
 
 \usepackage{graphicx}% Include figure files
@@ -49,6 +50,7 @@ preprint,
 \usepackage{fancyref}
 \usepackage{siunitx}
 \usepackage{soul}
+\usepackage{nccmath}
 %\usepackage[mathlines]{lineno}% Enable numbering of text and display math
 %\linenumbers\relax % Commence numbering lines
 
@@ -66,7 +68,7 @@ preprint,
 ]{geometry}
 
 \expandafter\hypersetup{
-  pdftitle = {Solving a Model Harmonic System},
+  pdftitle = {Grungy Times: The Euler-Lagrange Equations},
   pdfauthor = {Anshul Singhvi},
   pdfdisplaydoctitle = true,
   colorlinks,
@@ -80,22 +82,22 @@ preprint,
 
 \preprint{APS/123-QED}
 
-\title{Solving a Model Harmonic System}
+\title{Grungy Times: The Euler-Lagrange Equations}
 
 \author{Anshul Singhvi}
 \altaffiliation[Also at ]{Applied Physics Department, Columbia University.}
 \email{asinghvi17@simons-rock.edu}
 \author{Bethan Cordone}
-\email{bcordone17@simons-rock.edu}
 \altaffiliation[Also at ]{Applied Physics Department, Columbia University.}
+\email{bcordone17@simons-rock.edu}
 \author{Prutha Patil}%
 \email{ppatil18@simons-rock.edu}
 \author{Yecheng Ma}
+\altaffiliation[Also at ]{Operations Research Department, Columbia University.}
 \email{yma17@simons-rock.edu}
-\altaffiliation[Also at ]{Computer Science Department, Columbia University.}
 \author{YuXuan Liu}
-\email{yliu17@simons-rock.edu}
 \altaffiliation[Also at ]{Applied Physics Department, Columbia University.}
+\email{yliu17@simons-rock.edu}
 
 \affiliation{Bard College at Simon's Rock}%
 
@@ -103,13 +105,114 @@ preprint,
              %  but any date may be explicitly specified
 
 \begin{abstract}
-    The Euler-Lagrange equations are ewwler.
+    The Euler-Lagrange equations are ewwler.  Here's what we can do to make them...kewwler.
 \end{abstract}
 
-%\keywords{Suggested keywords}%Use showkeys class option if keyword
-                              %display desired
 \maketitle
 
 \section{Introduction}
+% https://www.youtube.com/watch?v=oHg5SJYRHA0, here's something fun for everyone.
+Euler-Lagrange forms an integral part of our petrochemical production pipeline.
+
+\section{Falling Bodies} % q1
+
+Any body falling sufficiently close to the surface of the Earth is subject to an approximately constant gravitational force $F = mg$.
+
+\section{The Brachistochrone Problem} % q3
+
+The brachistochrone curve is simply the curve along which a frictionless particle will slide in the minimum time.  Brachistochrone trajectories are especially interesting in the context of space travel, since they provide the most efficient trajectories with which to traverse long distances.
+
+The problem is, specifically, to find the curve $y(x)$ between points $y(a) = A$ and $y(b) = B$, along which a particle will slide in the minimum time.
+
+Here, we will trace out Jakob Bernoulli's solution to the brachistochrone problem, and justify all the steps he took.
+
+We begin with the fundamental theorem of calculus, which shows that:
+\[T = \int_0^t dt\]
+
+Next, we proceed to a chain rule equality.  Though this is perhaps unpalatable to most mathematicians, it is trivial to show through the chain rule that $\frac{dt}{ds} ds = dt$:
+
+\[\implies \int_0^T dt = \int_0^L \frac{dt}{ds} ds\]
+
+However, there is an important simplification we can make here.  Velocity is defined as $v = \frac{ds}{dt}$, and a simple inversion shows that $\frac{dt}{ds} = \frac 1v$:
+
+\[\int_0^L \frac{dt}{ds} ds = \int_0^L \frac 1v ~ ds\]
+
+Let us assume a coordinate system in which the particle begins at the origin, and the positive $y$ direction points upwards, against the direction of gravity.  We can now find the velocity of the particle as a function of its position, by using the principle of energy conservation.
+
+Let $h = 0$ be the initial position of the particle.  We know that the gravitational potential energy is simply $V_g = mgh$, and that the kinetic energy in the absence of rotation or friction is $T = \frac12 mv^2$.  Thus,
+
+\begin{align*}
+    &mgh = -mgy + \frac12 mv^2\\
+    &\implies mgy = \frac12 mv^2\\
+    &\implies v = \sqrt{2gy}
+\end{align*}
+
+Now, we can substitute this back into our original integral,
+
+\[\int_0^L \frac 1v ~ ds = \int_0^L \frac{1}{\sqrt{2gy}} ~ ds\]
+
+However, it's important to remember that here, $ds$ is actually just $\sqrt{dx^2 + dy^2}$.  This can then be algebraically simplified to $dx\sqrt{1 - \left(\frac{dy}{dx}\right)^2}$.  Substituting this into our integral,
+
+\[\int_0^L \frac{1}{\sqrt{2gy}} ~ ds = \sqrt{\frac{1}{2g}} \int_a^b \sqrt{\frac{1 + y'^2}{y}} ~ dx\]
+
+This is simply integrating over the $x$ domain of the path, as opposed to the $y$ domain.
+
+We can now solve for the Euler-Lagrange equations of $\displaystyle \sqrt{\frac{1}{2g}} \int_a^b \sqrt{\frac{1 + y'^2}{y}} ~ dx$:
+
+\begin{align*}
+    &F_{y}=-\sqrt{\frac{1+(y')^2}{8 g}} y^{-\frac32}\\
+    &F_{y^{\prime}}=\frac{y}{\sqrt{2 g y} \sqrt{1+(y')^2}}
+    &F_{y^{\prime} x}=\frac{\frac{1}{2} y^{\prime 2}\left[y\left(1+y^{\prime 2}\right)\right]^{-1 / 2}\left(2 y^{\prime \prime} y+y^{\prime 2}+1\right)+y^{\prime \prime}(\sqrt{y} \sqrt{1+y^{\prime 2}})}{\sqrt{2 g y\left(1+y^{\prime 2}\right)}}
+\end{align*}
+
+We know that $F_{y'x} = F_y$.  Therefore, % TODO justify
+
+\begin{align*}
+    &\sqrt{\frac{1+y^{\prime 2}}{8 g}} y^{-\frac{3}{2}}-\frac{\frac{1}{2} y^{\prime 2}\left[y\left(1+y^{\prime 2}\right)\right]^{-1 / 2}\left(2 y^{\prime \prime} y+y^{\prime 2}+1\right)+y^{\prime \prime}(\sqrt{y} \sqrt{1+y^{\prime 2}})}{\sqrt{2 g y\left(1+y^{\prime 2}\right)}}=0\\
+    &\text{After some tedious simplification, which is redacted for clarity,}\\
+    &2y''y' + y'^2 + 1 = 0 & \Box
+\end{align*}
+
+\section{The Spring-Mass System} % q2
+
+\section{Generalising the Lagrangian: Degrees of Freedom} % q6
+
+\section{The Two Mass, Three Spring System} % q4
+
+\section{The Ray Equation; Fermat's Principle} % q5
+The velocity of an object in 2D can be broken down into its basis component, and the line element can be written interm of velocity.
+$$v = \sqrt{x'^2+y'^2}\qquad ds = vdt = \sqrt{x'^2+y'^2}dt$$
+Then the total time taken can be calculated by
+$$T = \int_P \frac{ds}{c(x,y)} = \int_P \frac{\sqrt{x'^2+y'^2}dt}{c(x,y)} = \int_PF(t,x,x',y,y')dt$$
+$$\text{ where }F(t,x,x',y,y') = \frac{\sqrt{x'^2+y'^2}}{c(x,y)}$$
+To minimize time, the variation need to be stationary at zero pertubation. $n_x,n_y$ are small pertubations to the system.
+\begin{ceqn}
+    \begin{align*}
+        \delta T &= \left.\frac{d T(t,x+\epsilon n_x, y+\epsilon n_y,x'+\epsilon n'_x,y'+\epsilon n'_y)}{d\epsilon}\right|_{\epsilon=0} = 0\\
+        &= \int \left(\frac{\partial F}{\partial x}n_x + \frac{\partial F}{\partial x'}n_x' + \frac{\partial F}{\partial y}n_y + \frac{\partial F}{\partial y'}n_y'\right)\\
+        &= \int \left(\frac{\partial F}{\partial x}n_x + \frac{\partial F}{\partial x'}\frac{d n_x}{dt} + \frac{\partial F}{\partial y}n_y + \frac{\partial F}{\partial y'}\frac{d n_y}{dt}\right)\\
+        &= \int \left(\frac{\partial F}{\partial x}n_x - n_x\frac{d}{dt}\frac{\partial F}{\partial x'} + \frac{\partial F}{\partial y}n_y - n_y\frac{d}{dt}\frac{\partial F}{\partial y'}\right)\\
+        &= \int \left(\left[\frac{\partial F}{\partial x} - \frac{d}{dt}\frac{\partial F}{\partial x'}\right]n_x + \left[\frac{\partial F}{\partial y} - \frac{d}{dt}\frac{\partial F}{\partial y'}\right]n_y\right)dt = 0\\
+    \end{align*}
+\end{ceqn}
+Which can be summarized as a pair of lagrange equations
+$$\frac{\partial F}{\partial x} = \frac{d}{d t}\frac{\partial F}{\partial x'} \qquad 1)$$
+$$\frac{\partial F}{\partial y} = \frac{d}{d t}\frac{\partial F}{\partial y'}\qquad 2)$$
+Carry out the derivation for equation 1(i.e. the x curve).
+$$\frac{\partial F}{\partial x} = \sqrt{x'^2+y'^2}\frac{\partial}{\partial x}\frac{1}{c(x,y)} = -\frac{\sqrt{x'^2+y'^2}}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}$$
+use the fact that $x' = \frac{dx}{dt}$
+$$\frac{d}{d t} \frac{\partial F}{\partial x'} = \frac{d}{dt} \frac{\partial}{\partial x'}\frac{\sqrt{x'^2+y'^2}}{c(x,y)} = \frac{d}{dt} \frac{x'}{c(x,y)\sqrt{x'^2+y'^2}} = \frac{d}{dt} \frac{dx}{c(x,y)\sqrt{x'^2+y'^2}dt}$$
+We can convert the independent variable form t to s by multiplying both side of equation 1 by $\frac{dt}{ds} = (x'^+y'^2)^{\frac{1}{2}}$:
+$$\frac{\partial F}{\partial x}\frac{dt}{ds} = -(x'^+y'^2)^{\frac{1}{2}}\frac{\sqrt{x'^2+y'^2}}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x} = -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}$$
+Using chain rule and the fact that $ds = (x'^+y'^2)^{\frac{1}{2}} dt$:
+$$\frac{d}{d t} \frac{\partial F}{\partial x'} \frac{dt}{ds} = \frac{dt}{ds}\frac{d}{dt} \frac{dx}{c(x,y)\sqrt{x'^2+y'^2}dt} = \frac{d}{ds}\frac{dx}{c(x,y)ds}$$.
+The exact same procedure can be carry out on equation 2, which together would yield the following system:
+$$\frac{d}{ds}\frac{dx}{c(x,y)ds} = -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}$$
+$$\frac{d}{ds}\frac{dy}{c(x,y)ds} = -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial y}$$
+\\
+In fact, the system can be generalized into
+$$\frac{d}{ds} \frac{1}{c(\vec{r})}\frac{d\vec{r}}{ds} = -\frac{1}{c(\vec{r})^2}\nabla c(\vec{r})$$
+Where $\vec{r}$ is the position vector of the object and $\nabla$ is the gradient, and the expressioin describe a n-equation system component wise.\\
+Taking $\vec{r} = (x,y)$ would yield the result derived above.
 
 \end{document}
