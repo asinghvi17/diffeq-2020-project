@@ -37,7 +37,7 @@ function cycloid(xf, yf; N = 1000, g = 9.81)
     )
 end
 
-scene, layout = layoutscene(10)
+scene, layout = layoutscene(3)
 
 ax = layout[1, 1] = LAxis(scene)
 ax.title = "Brachistochrone trajectory"
@@ -45,6 +45,6 @@ ax.yreversed = true
 
 lines!(ax, cycloid(1, .65))
 # plot the straight-line path and hte
-lines!(ax, [Point2f0(0), Point2f0(0, .65), Point2f0(1, .65)]; linestyle = :dash, linewidth = .7)
-lines!(ax, [Point2f0(0), Point2f0(1, .65)]; linestyle = :dash, linewidth = .7)
+lines!(ax, [Point2f0(0), Point2f0(0, .65), Point2f0(1, .65)]; linestyle = [4, 8], linewidth = .7)
+lines!(ax, [Point2f0(0), Point2f0(1, .65)]; linestyle = [4, 8], linewidth = .7)
 save("brachistochrone.pdf", scene)

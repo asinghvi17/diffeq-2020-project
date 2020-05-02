@@ -19,7 +19,7 @@
 % prstab,
 % prstper,
 % floatfix,
- fleqn
+ fleqn,
 ]{revtex4-2}
 
 \usepackage{graphicx}% Include figure files
@@ -33,6 +33,9 @@
 \usepackage{soul}
 \usepackage{nccmath}
 \usepackage{tikz}
+
+% \endofdump
+
 \usetikzlibrary{calc, patterns, decorations.pathmorphing, decorations.markings}
 \tikzset{
     ground/.style = {
@@ -205,6 +208,12 @@ We know that $F_{y'x} = F_y$.  Therefore, % TODO justify
     &2y''y' + y'^2 + 1 = 0 & \Box
 \end{align*}
 
+\begin{figure}
+    \includegraphics{brachistochrone.pdf}
+    \caption{The brachistochrone trajectory from (0, 0) to (1, -0.65).  The dashed lines represent linear, slower paths.}
+    \label{fig: brachistochrone}
+\end{figure}
+
 \section{The Spring-Mass System} % q2
 
 \begin{figure}
@@ -221,25 +230,36 @@ We know that $F_{y'x} = F_y$.  Therefore, % TODO justify
 
         \draw [decorate, decoration = {coil, segment length=4pt}] (wall.east) ++ (0.15cm, 1.5cm) -- (M.west);
 
-        \draw [-latex,ultra thick] (M.east) ++ (0.2cm,0) -- +(1cm,0);
+        \draw [-latex,ultra thick] (M.east) ++ (0.2cm,0) -- +(1cm,0) node [right] {$x$};
 
     \end{tikzpicture}
     \caption{A single-spring, single-mass system.}
 \end{figure}
 
-Spring-mass systems are very common in physics.
+Spring-mass systems are very common in physics.  Let us define a system with a single mass, tethered to a wall by a spring.  Let it have a degree of freedom along the $x$-axis, and let the origin be at the equilibrium point.  Amen.
+
+The elastic potential energy in this system is simply $\displaystyle V(x) = \frac12kx^2$, where $k$ is the constant of compressibility of the spring.  The formula for kinetic energy is unchanged ($\displaystyle T(\dot x) = \frac12m\dot x^2$).  Knowing these, the conserved term is $\displaystyle \mathscr L = T - V = \frac12m\dot x^2 - \frac12kx^2$.
+
+From this, we can directly solve for the Euler-Lagrange equations:
+\begin{align*}
+  &\frac{∂\mathscr L}{∂x} = -kx\\
+  &\frac{∂\mathscr L}{∂t∂x} = m\ddot x\\
+  &⟹ m\ddot x + kx = 0\\
+\end{align*}
+
+This last expression is the differential equation which governs spring motion.  If we choose a mass of 1 kg, and a spring constant of
 
 \section{Generalising the Lagrangian: Degrees of Freedom} % q6
 
 \section{The Two Mass, Three Spring System} % q4
 
 \section{The Ray Equation; Fermat's Principle} % q5
-The velocity of an object in 2D can be broken down into its basis component, and the line element can be written interm of velocity.
-$$v = \sqrt{x'^2+y'^2}\qquad ds = vdt = \sqrt{x'^2+y'^2}dt$$
+The velocity of an object in 2D can be broken down into its basis component, and the line element can be written in terms of velocity.
+\[v = \sqrt{x'^2+y'^2}\qquad ds = vdt = \sqrt{x'^2+y'^2}dt\]
 Then the total time taken can be calculated by
-$$T = \int_P \frac{ds}{c(x,y)} = \int_P \frac{\sqrt{x'^2+y'^2}dt}{c(x,y)} = \int_PF(t,x,x',y,y')dt$$
-$$\text{ where }F(t,x,x',y,y') = \frac{\sqrt{x'^2+y'^2}}{c(x,y)}$$
-To minimize time, the variation need to be stationary at zero pertubation. $n_x,n_y$ are small pertubations to the system.
+\[T = \int_P \frac{ds}{c(x,y)} = \int_P \frac{\sqrt{x'^2+y'^2}dt}{c(x,y)} = \int_PF(t,x,x',y,y')dt\]
+\[text{ where }F(t,x,x',y,y') = \frac{\sqrt{x'^2+y'^2}}{c(x,y)}\]
+To minimize time, the variation need to be stationary at zero pertubation. $n_x$ and $n_y$ are small pertubations to the system.
 \begin{ceqn}
     \begin{align*}
         \delta T &= \left.\frac{d T(t,x+\epsilon n_x, y+\epsilon n_y,x'+\epsilon n'_x,y'+\epsilon n'_y)}{d\epsilon}\right|_{\epsilon=0} = 0\\
