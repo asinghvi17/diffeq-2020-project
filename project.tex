@@ -1,23 +1,4 @@
-% ****** Start of file apssamp.tex ******
-%
-%   This file is part of the APS files in the REVTeX 4.2 distribution.
-%   Version 4.2a of REVTeX, December 2014
-%
-%   Copyright (c) 2014 The American Physical Society.
-%
-%   See the REVTeX 4 README file for restrictions and more information.
-%
-% TeX'ing this file requires that you have AMS-LaTeX 2.0 installed
-% as well as the rest of the prerequisites for REVTeX 4.2
-%
-% See the REVTeX 4 README file
-% It also requires running BibTeX. The commands are as follows:
-%
-%  1)  latex apssamp.tex
-%  2)  bibtex apssamp
-%  3)  latex apssamp.tex
-%  4)  latex apssamp.tex
-%
+\RequirePackage{luatex85}
 \documentclass[%
  % reprint,
 % superscriptaddress,
@@ -51,6 +32,18 @@
 \usepackage{siunitx}
 \usepackage{soul}
 \usepackage{nccmath}
+\usepackage{tikz}
+\usetikzlibrary{calc, patterns, decorations.pathmorphing, decorations.markings}
+\tikzset{
+    ground/.style = {
+        fill,
+        pattern        = north east lines,
+        draw           = none,
+        minimum width  = 0.5cm,
+        minimum height = 0.3cm,
+    },
+}
+
 %\usepackage[mathlines]{lineno}% Enable numbering of text and display math
 %\linenumbers\relax % Commence numbering lines
 
@@ -114,9 +107,48 @@
 % https://www.youtube.com/watch?v=oHg5SJYRHA0, here's something fun for everyone.
 Euler-Lagrange forms an integral part of our petrochemical production pipeline.
 
+For systems with one degree of freedom, the \emph{action integral} called $J(y)$ can be expressed as:
+
+\begin{equation}\label{eq: action}
+    J(y) = \int_0^T F(t, y, \dot y) ~ dt
+\end{equation}
+
 \section{Falling Bodies} % q1
 
-Any body falling sufficiently close to the surface of the Earth is subject to an approximately constant gravitational force $F = mg$.
+Any body falling sufficiently close to the surface of the Earth is subject to an approximately constant gravitational force $F = mg$, assuming a perfectly spherical Earth, and that the object's height above the surface of the Earth is much less than its radius.  Its trajectory is parameterized by a function $y(t)$ which expresses its height relative to the surface of the Earth.  We concern ourselves here with a trajectory going from $t = 0, y_0 = y(0)$ to $t = T, y = y(T)$.
+
+The kinetic energy of a falling body is simply $\displaystyle T = \frac12 m\dot y^2$.  Its gravitational potential energy is the integral of the gravitational force from its origin to its destination; assuming the surface of the Earth as the origin ($y = 0$), $\displaystyle V = mgy$.
+
+We have defined an isolated system; as such, in the confines of the system, there can be no change in the net amount of energy.  The energy can be represented $E_{tot} = T - V$, which expands to $\displaystyle E_{tot} = \frac12m\dot y(t)^2 - mgy(t)$.  This function $E_{tot}(t, y, \dot y)$ is what we need to conserve.
+
+Thus, we can define the action integral $J$ as follows:
+\[
+    J = \int_0^T \frac12m\dot y(t)^2 - mgy(t) ~ dt
+\]
+
+By the Euler-Lagrange constraint, then,
+
+\begin{align*}
+  &\frac{∂}{∂y} \left[E_{tot}(t, y, \dot y)\right] - \frac{∂^2}{∂t∂y} \left[E_{tot}(t, y, \dot y)\right] = 0
+\end{align*}
+
+We can evaluate these partial derivatives, of course, and this evaluation gives us the equation:
+
+\begin{align*}
+  &m\ddot y(t) = -mg\\
+  &⟹ \ddot y(t) = -g\\
+\end{align*}
+
+This can now be integrated with respect to time.
+
+\begin{align*}
+  &\iint \ddot y(t) ~ dt ~ dt = \iint -g ~ dt ~ dt\\
+  &⟹ y(t) = \iint -g ~ dt ~ dt\\
+  &⟹ y(t) = \int -gt + C_1 ~ dt\\
+  &⟹ y(t) = -\frac12gt^2 + C_1t + C_2\\
+\end{align*}
+
+The constants $C_1$ and $C_2$ are really just the initial velocity and position of the object, respectively.  This function describes a parabolic trajectory, which we know to be true.
 
 \section{The Brachistochrone Problem} % q3
 
@@ -124,7 +156,7 @@ The brachistochrone curve is simply the curve along which a frictionless particl
 
 The problem is, specifically, to find the curve $y(x)$ between points $y(a) = A$ and $y(b) = B$, along which a particle will slide in the minimum time.
 
-Here, we will trace out Jakob Bernoulli's solution to the brachistochrone problem, and justify all the steps he took.
+Here, we will trace out Johann Bernoulli's solution to the brachistochrone problem, and justify all the steps he took.
 
 We begin with the fundamental theorem of calculus, which shows that:
 \[T = \int_0^t dt\]
@@ -139,7 +171,7 @@ However, there is an important simplification we can make here.  Velocity is def
 
 Let us assume a coordinate system in which the particle begins at the origin, and the positive $y$ direction points upwards, against the direction of gravity.  We can now find the velocity of the particle as a function of its position, by using the principle of energy conservation.
 
-Let $h = 0$ be the initial position of the particle.  We know that the gravitational potential energy is simply $V_g = mgh$, and that the kinetic energy in the absence of rotation or friction is $T = \frac12 mv^2$.  Thus,
+Additionally, let $h = 0$ be the initial position of the particle.  We know that the gravitational potential energy is simply $V_g = mgh$, and that the kinetic energy in the absence of rotation or friction is $T = \frac12 mv^2$.  Thus,
 
 \begin{align*}
     &mgh = -mgy + \frac12 mv^2\\
@@ -174,6 +206,28 @@ We know that $F_{y'x} = F_y$.  Therefore, % TODO justify
 \end{align*}
 
 \section{The Spring-Mass System} % q2
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[every node/.style = {draw, outer sep = 0pt, thick}]
+        \node (M) [minimum width=1cm, minimum height=2.5cm] {$m$};
+
+        \node (ground) [ground,anchor=north,yshift=-0.25cm,minimum width=1.5cm] at (M.south) {};
+        \draw (ground.north east) -- (ground.north west);
+        \draw [thick] (M.south west) ++ (0.2cm,-0.125cm) circle (0.125cm)  (M.south east) ++ (-0.2cm,-0.125cm) circle (0.125cm);
+
+        \node (wall) [ground, rotate=-90, minimum width=3cm,yshift=-3cm] {};
+        \draw (wall.north east) -- (wall.north west);
+
+        \draw [decorate, decoration = {coil, segment length=4pt}] (wall.east) ++ (0.15cm, 1.5cm) -- (M.west);
+
+        \draw [-latex,ultra thick] (M.east) ++ (0.2cm,0) -- +(1cm,0);
+
+    \end{tikzpicture}
+    \caption{A single-spring, single-mass system.}
+\end{figure}
+
+Spring-mass systems are very common in physics.
 
 \section{Generalising the Lagrangian: Degrees of Freedom} % q6
 
