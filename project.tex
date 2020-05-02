@@ -161,7 +161,7 @@ We can now solve for the Euler-Lagrange equations of $\displaystyle \sqrt{\frac{
 
 \begin{align*}
     &F_{y}=-\sqrt{\frac{1+(y')^2}{8 g}} y^{-\frac32}\\
-    &F_{y^{\prime}}=\frac{y}{\sqrt{2 g y} \sqrt{1+(y')^2}}
+    &F_{y^{\prime}}=\frac{y}{\sqrt{2 g y} \sqrt{1+(y')^2}}\\
     &F_{y^{\prime} x}=\frac{\frac{1}{2} y^{\prime 2}\left[y\left(1+y^{\prime 2}\right)\right]^{-1 / 2}\left(2 y^{\prime \prime} y+y^{\prime 2}+1\right)+y^{\prime \prime}(\sqrt{y} \sqrt{1+y^{\prime 2}})}{\sqrt{2 g y\left(1+y^{\prime 2}\right)}}
 \end{align*}
 
@@ -182,9 +182,11 @@ We know that $F_{y'x} = F_y$.  Therefore, % TODO justify
 \section{The Ray Equation; Fermat's Principle} % q5
 The velocity of an object in 2D can be broken down into its basis component, and the line element can be written interm of velocity.
 $$v = \sqrt{x'^2+y'^2}\qquad ds = vdt = \sqrt{x'^2+y'^2}dt$$
+
 Then the total time taken can be calculated by
 $$T = \int_P \frac{ds}{c(x,y)} = \int_P \frac{\sqrt{x'^2+y'^2}dt}{c(x,y)} = \int_PF(t,x,x',y,y')dt$$
 $$\text{ where }F(t,x,x',y,y') = \frac{\sqrt{x'^2+y'^2}}{c(x,y)}$$
+
 To minimize time, the variation need to be stationary at zero pertubation. $n_x,n_y$ are small pertubations to the system.
 \begin{ceqn}
     \begin{align*}
@@ -195,24 +197,68 @@ To minimize time, the variation need to be stationary at zero pertubation. $n_x,
         &= \int \left(\left[\frac{\partial F}{\partial x} - \frac{d}{dt}\frac{\partial F}{\partial x'}\right]n_x + \left[\frac{\partial F}{\partial y} - \frac{d}{dt}\frac{\partial F}{\partial y'}\right]n_y\right)dt = 0\\
     \end{align*}
 \end{ceqn}
+
 Which can be summarized as a pair of lagrange equations
 $$\frac{\partial F}{\partial x} = \frac{d}{d t}\frac{\partial F}{\partial x'} \qquad 1)$$
 $$\frac{\partial F}{\partial y} = \frac{d}{d t}\frac{\partial F}{\partial y'}\qquad 2)$$
+
 Carry out the derivation for equation 1(i.e. the x curve).
 $$\frac{\partial F}{\partial x} = \sqrt{x'^2+y'^2}\frac{\partial}{\partial x}\frac{1}{c(x,y)} = -\frac{\sqrt{x'^2+y'^2}}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}$$
+
 use the fact that $x' = \frac{dx}{dt}$
 $$\frac{d}{d t} \frac{\partial F}{\partial x'} = \frac{d}{dt} \frac{\partial}{\partial x'}\frac{\sqrt{x'^2+y'^2}}{c(x,y)} = \frac{d}{dt} \frac{x'}{c(x,y)\sqrt{x'^2+y'^2}} = \frac{d}{dt} \frac{dx}{c(x,y)\sqrt{x'^2+y'^2}dt}$$
+
 We can convert the independent variable form t to s by multiplying both side of equation 1 by $\frac{dt}{ds} = (x'^+y'^2)^{\frac{1}{2}}$:
 $$\frac{\partial F}{\partial x}\frac{dt}{ds} = -(x'^+y'^2)^{\frac{1}{2}}\frac{\sqrt{x'^2+y'^2}}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x} = -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}$$
+
 Using chain rule and the fact that $ds = (x'^+y'^2)^{\frac{1}{2}} dt$:
 $$\frac{d}{d t} \frac{\partial F}{\partial x'} \frac{dt}{ds} = \frac{dt}{ds}\frac{d}{dt} \frac{dx}{c(x,y)\sqrt{x'^2+y'^2}dt} = \frac{d}{ds}\frac{dx}{c(x,y)ds}$$.
+
 The exact same procedure can be carry out on equation 2, which together would yield the following system:
-$$\frac{d}{ds}\frac{dx}{c(x,y)ds} = -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}$$
-$$\frac{d}{ds}\frac{dy}{c(x,y)ds} = -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial y}$$
+$$\frac{d}{ds}\frac{1}{c(x,y)}\frac{dx}{ds} = -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}$$
+$$\frac{d}{ds}\frac{1}{c(x,y)}\frac{dy}{ds} = -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial y}$$
 \\
+
 In fact, the system can be generalized into
 $$\frac{d}{ds} \frac{1}{c(\vec{r})}\frac{d\vec{r}}{ds} = -\frac{1}{c(\vec{r})^2}\nabla c(\vec{r})$$
 Where $\vec{r}$ is the position vector of the object and $\nabla$ is the gradient, and the expressioin describe a n-equation system component wise.\\
-Taking $\vec{r} = (x,y)$ would yield the result derived above.
+
+Taking $\vec{r} = (x,y)$ would yield the result derived above.\\
+
+Let's consider ray propagation in a Gradient index (GRIN) medium such as the lens in our eye. Assume the medium is a cylinder shape, the speed of light (i.e. refractive index) varies based on distance from the central optical axis:
+$$c = \frac{c_0}{a\sqrt{1-(cr)^2}}$$
+where $r$ is radius in cylindrical coordinate, and $a,b$ are arbitrary constants, and $c_0$ is the speed of light in vacuum.
+
+Choosing s = z (we are interested in the distance from the center as the ray propagate further into the cylinder, i.e. $r(z)$), the ray equation describes that:
+\begin{ceqn}
+    \begin{align*}
+        \frac{d}{dz} \frac{a\sqrt{1-(cr)^2}}{c_0}\frac{d r}{dz} &= -\frac{a^2(1-(cr)^2)}{c_0^2}\nabla \frac{c_0}{a\sqrt{1-(cr)^2}}\\
+        \frac{a\sqrt{1-(cr)^2}}{c_0}\frac{d^2 r}{dz^2} &= -\frac{a(1-(cr)^2)}{c_0}\frac{\partial}{\partial r} \frac{1}{\sqrt{1-(cr)^2}}\\
+        \sqrt{1-(cr)^2}\frac{d^2 r}{dz^2} &= -(1-(cr)^2)\frac{\partial}{\partial r} \frac{1}{\sqrt{1-(cr)^2}}\\
+        \frac{d^2 r}{dz^2} &= -\sqrt{1-(cr)^2} \frac{b^2r}{(1-(cr)^2)^{\frac{3}{2}}}\\
+        \frac{d^2 r}{dz^2} &= -\frac{b^2r}{(1-(cr)^2)}\\
+    \end{align*}
+\end{ceqn}
+
+This is a second order autonomous differential equation. We can simply the express by assuming $cr<<1$, the ODE then reduce to a simple \textit{second order linear homogeneous non-constant coefficient differential equation}, which we know the answer already:
+\begin{ceqn}
+    \begin{align*}
+        \frac{d^2 r}{dz^2} &= -\frac{b^2r}{(1-(cr)^2)}\\
+        &\approx -b^2 r\\
+        \implies r(z) &= A\cos(cz)+B\sin(cz)
+    \end{align*}
+\end{ceqn}
+Solving for the initial condition where the light enter at position $a$ with a slope of $b$
+\begin{ceqn}
+    \begin{align*}
+        r(0) &= A\cos(c0)+B\sin(c0) = a \\
+        &\implies A = a\\
+        r'(0) &= -cA\sin(c0)+cB\cos(c0) = b \\
+        &\implies B = \frac{b}{c}\\
+        r(z) &= a\cos(cz)+\frac{b}{c}\sin(cz)
+    \end{align*}
+\end{ceqn}
+
+The ray oscillates back and forth across the optical axis.
 
 \end{document}
