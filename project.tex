@@ -120,7 +120,7 @@ For systems with one degree of freedom, the \emph{action integral}, called $J(y)
     J(y) = \int_0^T F(t, y, \dot y) ~ dt
 \end{equation}
 
-To solve for the equations of motion of a mechanical system, we can attempt to find function $y(t)$ which is a \emph{stationary point} of the action integral; this means that the trajectory which $y(t)$ takes conserves the quantity within the action integral.  This function must satisfy several constraints; it must satisfy the boundary conditions $y(a) = A$, and $y(b) = B$, and it must have at least two continuous derivatives.  
+To solve for the equations of motion of a mechanical system, we can attempt to find function $y(t)$ which is a \emph{stationary point} of the action integral; this means that the trajectory which $y(t)$ takes conserves the quantity within the action integral.  This function must satisfy several constraints; it must satisfy the boundary conditions $y(a) = A$, and $y(b) = B$, and it must have at least two continuous derivatives.
 
 It's useful to examine the behaviour around our proposed solution, to see whether it really is a stationary point.  This method is known as the \textit{calculus of variations}.
 Consider a perturbation to the initial function, of magnitude $0 < \epsilon \ll 1$:
@@ -142,7 +142,7 @@ After some simplification, this evaluation becomes:
     \int_{a}^{b}\left[\frac{\partial F}{\partial y}\left(x, \bar{y}, \bar{y}^{\prime}\right)-\frac{\partial^{2} F}{\partial x \partial y^{\prime}}\left(x, \bar{y}, \bar{y}^{\prime}\right)\right] \eta ~ d x=0
 \]
 
-which means that the multiplicand of $\eta$ must be 0.  Therefore, 
+which means that the multiplicand of $\eta$ must be 0.  Therefore,
 
 \[
     \frac{\partial F}{\partial y}\left(x, y, y^{\prime}\right)-\frac{\partial^{2} F}{\partial x \partial y^{\prime}}\left(x, y, y^{\prime}\right)=0
@@ -333,7 +333,7 @@ Solving this algebraically, we can derive this to be:
     &= \int_a^b \left(\left[\frac{\partial F}{\partial x} - \frac{d}{dt}\frac{\partial F}{\partial x'}\right]n_x + \left[\frac{\partial F}{\partial y} - \frac{d}{dt}\frac{\partial F}{\partial y'}\right]n_y\right)dt = 0\\
 \end{align*}
 
-Since this condition must hold for any choice of $n_x,n_y$, it is sufficient to conclude that the integrand itself must be zero, i.e. that each multiple of $n_x,n_y$ must be zero. 
+Since this condition must hold for any choice of $n_x,n_y$, it is sufficient to conclude that the integrand itself must be zero, i.e. that each multiple of $n_x,n_y$ must be zero.
 
 This relationship can be summarized as a pair of Lagrange equations:
 \[\frac{\partial F}{\partial x} - \frac{d}{d t}\frac{\partial F}{\partial x'}=0\]
@@ -360,14 +360,14 @@ This relationship can be summarized as a pair of Lagrange equations:
         \node (ground) [ground,anchor=north,yshift=-0.25cm,minimum width=1.5cm] at (M2.south) {};
         \draw (ground.north east) -- (ground.north west);
         \draw [thick] (M2.south west) ++ (0.2cm,-0.125cm) circle (0.125cm)  (M2.south east) ++ (-0.2cm,-0.125cm) circle (0.125cm);
-        
+
         \node at ($(M2.east) + (1.25cm, 0)$) (wall) [ground, rotate=90, minimum width=3cm] {};
         \draw (wall.north east) -- (wall.north west);
         \draw [decorate, decoration = {coil, segment length=4pt}] (wall.west) ++ (-0.15cm, 1.5cm) -- (M2.east) node [midway, below, draw = none] {$k_3$};
-        
+
         \draw [decorate, decoration = {coil, segment length=4pt}] (M.east) -- (M2.west) node [midway, below, draw = none] {$k_2$};
-        
-        
+
+
     \end{tikzpicture}
     \caption{A triple-spring, double-mass system.}
 \end{figure}
@@ -393,7 +393,7 @@ These equations resolve to
 \[0 = -\left(m_1(\ddot x_1) + k_1x_1 - k_2(x_2 - x_1)\right)\]
 \[0 = -\left(m_2(\ddot  x_2) + k_3x_2 + k_2(x_2 - x_1)\right)\]
 
-This result is the same one would get from analyzing the system using $F=ma$. The benefit of the Euler-Lagrange method is one does not have to displace the masses. It also eliminates the need to be concerned with direction, since energy is a scalar, unlike force, which is a vector.  
+This result is the same one would get from analyzing the system using $F=ma$. The benefit of the Euler-Lagrange method is one does not have to displace the masses. It also eliminates the need to be concerned with direction, since energy is a scalar, unlike force, which is a vector.
 
 
 \section{The Ray Equation; Fermat's Principle} % q5
