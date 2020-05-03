@@ -36,6 +36,7 @@ aps,
 \usepackage{tikz}
 \usepackage{setspace}
 % \endofdump
+\onehalfspacing{}
 
 \usetikzlibrary{calc, patterns, decorations.pathmorphing, decorations.markings}
 \tikzset{
@@ -119,14 +120,43 @@ For systems with one degree of freedom, the \emph{action integral}, called $J(y)
     J(y) = \int_0^T F(t, y, \dot y) ~ dt
 \end{equation}
 
-The value being integrated in $J(y)$ is the kinetic energy minus the potential energy: $K-V$. This is known as the Lagrangian and is usually denoted as $\mathscr L$.
+To solve for the equations of motion of a mechanical system, we can attempt to find function $y(t)$ which is a \emph{stationary point} of the action integral; this means that the trajectory which $y(t)$ takes conserves the quantity within the action integral.  This function must satisfy several constraints; it must satisfy the boundary conditions $y(a) = A$, and $y(b) = B$, and it must have at least two continuous derivatives.  
 
-The solution to the action integral is the Euler-Lagrange equation:
+It's useful to examine the behaviour around our proposed solution, to see whether it really is a stationary point.  This method is known as the \textit{calculus of variations}.
+Consider a perturbation to the initial function, of magnitude $0 < \epsilon \ll 1$:
+
+\[
+    \bar y(t) = y(t) + \epsilon \cdot \eta(t)
+\]
+
+$\eta(t)$ is called the \textit{perturbation function}; it is simply a function which obeys $\eta(a) = 0$ and $eta(b)$ = 0.  Now, we can observe the behaviour of the action integral as a function of $\epsilon$:
+
+\[
+    \phi(\epsilon) = J(y + \epsilon \cdot \eta) = \int_0^T F(t, y + \epsilon \eta, \dot y + \epsilon \dot \eta) ~ dt
+\]
+
+We can evaluate the \emph{derivative} of $\phi$ at 0.  We know, however, that there must be a stationary point at $\epsilon = 0$, which leads us to the inevitable conclusion that we must relinquish ourselves to the greedy clutches of algebra, and evaluate $\frac{d\phi}{d\epsilon}$ at 0.
+
+After some simplification, this evaluation becomes:
+\[
+    \int_{a}^{b}\left[\frac{\partial F}{\partial y}\left(x, \bar{y}, \bar{y}^{\prime}\right)-\frac{\partial^{2} F}{\partial x \partial y^{\prime}}\left(x, \bar{y}, \bar{y}^{\prime}\right)\right] \eta ~ d x=0
+\]
+
+which means that the multiplicand of $\eta$ must be 0.  Therefore, 
+
+\[
+    \frac{\partial F}{\partial y}\left(x, y, y^{\prime}\right)-\frac{\partial^{2} F}{\partial x \partial y^{\prime}}\left(x, y, y^{\prime}\right)=0
+\]
+
+which is the Euler-Lagrange equation.
 
 
+For our mechanical systems, the value being integrated in $J(y)$ is the kinetic energy minus the potential energy: $K-V$. In the physical sciences, this is known as the Lagrangian, and is usually denoted by $\mathscr L$.
+
+Thus, the solution to the action integral is the Euler-Lagrange equation:
 
 \begin{equation}\label{eq: el}
-    \frac{∂}{∂y} \left[x, y, \dot y \right] - \frac{∂^2}{∂x∂\dot y} \left[x, y, \dot y \right] = 0
+    \frac{∂}{∂y} \left[\vphantom{\frac12} \mathscr L(t, y, \dot y) \right] - \frac{∂^2}{∂x∂\dot y} \left[\vphantom{\frac12} \mathscr L(x, y, \dot y) \right] = 0
 \end{equation}
 
 \section{Falling Bodies} % q1
@@ -231,7 +261,10 @@ This can be shown to be the equation of a cycloid, and \Fref{fig: brachistochron
 
 \section{The Spring-Mass System} % q2
 
-\begin{figure}
+
+Spring-mass systems are very common in physics.  Let us define a system with a single mass, tethered to a wall by a spring.  Let it have a degree of freedom along the $x$-axis, and let the origin be at the equilibrium point.  Amen.
+
+\begin{figure}[h!]
     \centering
     \begin{tikzpicture}[every node/.style = {draw, outer sep = 0pt, thick}]
         \node (M) [minimum width=1cm, minimum height=2.5cm] {$m$};
@@ -245,13 +278,11 @@ This can be shown to be the equation of a cycloid, and \Fref{fig: brachistochron
 
         \draw [decorate, decoration = {coil, segment length=4pt}] (wall.east) ++ (0.15cm, 1.5cm) -- (M.west);
 
-        \draw [-latex,ultra thick] (M.east) ++ (0.2cm,0) -- +(1cm,0) node [right] {$x$};
+        \draw [-latex,ultra thick] (M.east) ++ (0.2cm,0) -- +(1cm,0) node [right, draw = none,] {$x$};
 
     \end{tikzpicture}
     \caption{A single-spring, single-mass system.}
 \end{figure}
-
-Spring-mass systems are very common in physics.  Let us define a system with a single mass, tethered to a wall by a spring.  Let it have a degree of freedom along the $x$-axis, and let the origin be at the equilibrium point.  Amen.
 
 The elastic potential energy in this system is simply $\displaystyle V(x) = \frac12kx^2$, where $k$ is the constant of compressibility of the spring.  The formula for kinetic energy is unchanged ($\displaystyle T(\dot x) = \frac12m\dot x^2$).  Knowing these, the conserved term is $\displaystyle \mathscr L = T - V = \frac12m\dot x^2 - \frac12kx^2$.
 
@@ -309,6 +340,38 @@ This relationship can be summarized as a pair of Lagrange equations:
 \[\frac{\partial F}{\partial y} - \frac{d}{d t}\frac{\partial F}{\partial y'}=0\]
 
 \section{The Two Mass, Three Spring System} % q4
+
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[every node/.style = {draw, outer sep = 0pt, thick}]
+        \node at (0, 0) (M) [minimum width=1cm, minimum height=2.5cm] {$m_1$};
+
+        \node (ground) [ground,anchor=north,yshift=-0.25cm,minimum width=1.5cm] at (M.south) {};
+        \draw (ground.north east) -- (ground.north west);
+        \draw [thick] (M.south west) ++ (0.2cm,-0.125cm) circle (0.125cm)  (M.south east) ++ (-0.2cm,-0.125cm) circle (0.125cm);
+
+        \node (wall) [ground, rotate=-90, minimum width=3cm, yshift=-2cm] {};
+        \draw (wall.north east) -- (wall.north west);
+
+        \draw [decorate, decoration = {coil, segment length=4pt}] (wall.east) ++ (0.15cm, 1.5cm) -- (M.west) node [midway, below, draw = none] {$k_1$};
+
+        \node at (2.5, 0) (M2) [minimum width = 1cm, minimum height = 2.5cm] {$m_2$};
+        \node (ground) [ground,anchor=north,yshift=-0.25cm,minimum width=1.5cm] at (M2.south) {};
+        \draw (ground.north east) -- (ground.north west);
+        \draw [thick] (M2.south west) ++ (0.2cm,-0.125cm) circle (0.125cm)  (M2.south east) ++ (-0.2cm,-0.125cm) circle (0.125cm);
+        
+        \node at ($(M2.east) + (1.25cm, 0)$) (wall) [ground, rotate=90, minimum width=3cm] {};
+        \draw (wall.north east) -- (wall.north west);
+        \draw [decorate, decoration = {coil, segment length=4pt}] (wall.west) ++ (-0.15cm, 1.5cm) -- (M2.east) node [midway, below, draw = none] {$k_3$};
+        
+        \draw [decorate, decoration = {coil, segment length=4pt}] (M.east) -- (M2.west) node [midway, below, draw = none] {$k_2$};
+        
+        
+    \end{tikzpicture}
+    \caption{A triple-spring, double-mass system.}
+\end{figure}
+
 
 As we showed in Section 4, the kinetic energy of an individual spring is $\displaystyle T = \frac12k\dot x$, and the potential energy is $\displaystyle V = -\frac12kx^2$.  Using the generalization principle put forth in Section 5, we can derive the equations of motion of a two-mass, three-spring system.
 
