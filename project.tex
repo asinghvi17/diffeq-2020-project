@@ -34,9 +34,7 @@ aps,
 \usepackage{soul}
 \usepackage{nccmath}
 \usepackage{tikz}
-\usepackage{setspace}
 % \endofdump
-\onehalfspacing{}
 
 \usetikzlibrary{calc, patterns, decorations.pathmorphing, decorations.markings}
 \tikzset{
@@ -109,6 +107,8 @@ aps,
 \end{abstract}
 
 \maketitle
+
+\linespread{1.3}
 
 \section{Introduction}
 % https://www.youtube.com/watch?v=oHg5SJYRHA0, here's something fun for everyone.
@@ -395,6 +395,13 @@ These equations resolve to
 
 This result is the same one would get from analyzing the system using $F=ma$. The benefit of the Euler-Lagrange method is one does not have to displace the masses. It also eliminates the need to be concerned with direction, since energy is a scalar, unlike force, which is a vector.
 
+\begin{figure}[ht!]
+    \centering
+    \includegraphics{3spring2mass.pdf}
+    \caption{A timeseries view of the three-spring, two-mass system.}
+    \label{fig: tstm}
+\end{figure}
+
 
 \section{The Ray Equation; Fermat's Principle} % q5
 
@@ -456,5 +463,11 @@ Solving for the initial condition where the light enter at position $a$ with a s
 \end{align*}
 
 The ray oscillates back and forth across the optical axis.
+
+\begin{figure}
+    \includegraphics{rays.pdf}
+    \caption{raytracing}
+    \label{fig: rays}
+\end{figure}
 
 \end{document}
