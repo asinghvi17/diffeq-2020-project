@@ -6,20 +6,21 @@
 % unsortedaddress,
 % runinaddress,
 % frontmatterverbose,
- preprint,
+% preprint,
 % preprintnumbers,
 % nofootinbib,
 % nobibnotes,
 % bibnotes,
  amsmath,amssymb,
- aps,
- pra,
+aps,
+% pra,
 % prb,
 % rmp,
 % prstab,
 % prstper,
 % floatfix,
  fleqn,
+ notitlepage,
 ]{revtex4-2}
 
 \usepackage{graphicx}% Include figure files
@@ -33,7 +34,7 @@
 \usepackage{soul}
 \usepackage{nccmath}
 \usepackage{tikz}
-
+\usepackage{setspace}
 % \endofdump
 
 \usetikzlibrary{calc, patterns, decorations.pathmorphing, decorations.markings}
@@ -73,6 +74,8 @@
   urlcolor={blue!80!black}
 }
 
+% \onehalfspacing
+
 
 \begin{document}
 
@@ -108,12 +111,22 @@
 
 \section{Introduction}
 % https://www.youtube.com/watch?v=oHg5SJYRHA0, here's something fun for everyone.
-Euler-Lagrange forms an integral part of our petrochemical production pipeline.
+% Euler-Lagrange forms an integral part of our petrochemical production pipeline.
 
-For systems with one degree of freedom, the \emph{action integral} called $J(y)$ can be expressed as:
+For systems with one degree of freedom, the \emph{action integral}, called $J(y)$, can be expressed as:
 
 \begin{equation}\label{eq: action}
     J(y) = \int_0^T F(t, y, \dot y) ~ dt
+\end{equation}
+
+The value being integrated in $J(y)$ is the kinetic energy minus the potential energy: $K-V$. This is known as the Lagrangian and is usually denoted as $\mathscr L$.
+
+The solution to the action integral is the Euler-Lagrange equation:
+
+
+
+\begin{equation}\label{eq: el}
+    \frac{∂}{∂y} \left[x, y, \dot y \right] - \frac{∂^2}{∂x∂\dot y} \left[x, y, \dot y \right] = 0
 \end{equation}
 
 \section{Falling Bodies} % q1
@@ -208,11 +221,13 @@ We know that $F_{y'x} = F_y$.  Therefore, % TODO justify
     &2y''y' + y'^2 + 1 = 0 & \Box
 \end{align*}
 
-\begin{figure}
+\begin{figure}[ht!]
     \includegraphics{brachistochrone.pdf}
     \caption{The brachistochrone trajectory from (0, 0) to (1, -0.65).  The dashed lines represent linear, slower paths.}
     \label{fig: brachistochrone}
 \end{figure}
+
+This can be shown to be the equation of a cycloid, and \Fref{fig: brachistochrone} illustrates one such trajectory.
 
 \section{The Spring-Mass System} % q2
 
@@ -251,7 +266,72 @@ This last expression is the differential equation which governs spring motion.  
 
 \section{Generalising the Lagrangian: Degrees of Freedom} % q6
 
+Until now, we have only considered systems with one degree of freedom (position).  However, the Euler-Lagrange method is powerful!  We can easily generalize it to an arbitrary number of degrees of freedom.  Here, we will consider the case of a system with two degrees of freedom - represented by two coordinates, $x$ and $y$.
+
+
+Such a system would form an action integral of:
+\[
+    J(x, y)=\int_{a}^{b} F\left(t, x, y, x^{\prime}, y^{\prime}\right) ~ dt
+\]
+The perturbed functional would then be:
+
+\begin{align*}
+\phi(\epsilon) &=J(\bar{x}+\epsilon n_x, \bar{y}+\epsilon n_y) \\
+&=\int_{a}^{b} F\left(t, \bar{x}+\epsilon n_x, \bar{y}+\epsilon n_y, \bar{x}^{\prime}+\epsilon n_x^{\prime}, \bar{y}^{\prime}+\epsilon n_y^{\prime}\right) d t
+\end{align*}
+
+where $\langle n_x(t),n_y(t)\rangle$ is a small vector perturbations to the system that satisfies:
+\[
+    \left\langle n_x(a),n_y(a)\right\rangle = \left\langle 0,0 \right\rangle \qquad \left\langle n_x(b),n_y(b) \right\rangle = \left\langle 0,0 \right\rangle
+\]
+
+Differentiating the perturbed functional $\phi(\epsilon)$, with respect to $\epsilon$,
+
+\[
+    \frac{d\phi}{d\epsilon} = \left.\frac{d J(t,x+\epsilon n_x, y+\epsilon n_y,x'+\epsilon n'_x,y'+\epsilon n'_y)}{d\epsilon}\right|_{\epsilon=0}
+\]
+
+Solving this algebraically, we can derive this to be:
+
+\begin{align*}
+    &= \int_a^b \left(\frac{\partial F}{\partial x}n_x + \frac{\partial F}{\partial x'}n_x' + \frac{\partial F}{\partial y}n_y + \frac{\partial F}{\partial y'}n_y'\right)dt\\
+    &= \int_a^b \left(\frac{\partial F}{\partial x}n_x + \frac{\partial F}{\partial x'}\frac{d n_x}{dt} + \frac{\partial F}{\partial y}n_y + \frac{\partial F}{\partial y'}\frac{d n_y}{dt}\right)dt\\
+    &= \left.\left(\frac{\partial F}{\partial x'}n_x(t) + \frac{\partial F}{\partial y'}n_y(t)\right)\right|_{t=a}^b + \int_a^b \left(\frac{\partial F}{\partial x}n_x - n_x\frac{d}{dt}\frac{\partial F}{\partial x'} + \frac{\partial F}{\partial y}n_y - n_y\frac{d}{dt}\frac{\partial F}{\partial y'}\right)dt\\
+    &\text{The boundary terms can be set to zero, from the constraint on pertubation vectors:}\\
+    &= \int_a^b \left(\frac{\partial F}{\partial x}n_x - n_x\frac{d}{dt}\frac{\partial F}{\partial x'} + \frac{\partial F}{\partial y}n_y - n_y\frac{d}{dt}\frac{\partial F}{\partial y'}\right)dt\\
+    &= \int_a^b \left(\left[\frac{\partial F}{\partial x} - \frac{d}{dt}\frac{\partial F}{\partial x'}\right]n_x + \left[\frac{\partial F}{\partial y} - \frac{d}{dt}\frac{\partial F}{\partial y'}\right]n_y\right)dt = 0\\
+\end{align*}
+
+Since this condition must hold for any choice of $n_x,n_y$, it is sufficient to conclude that the integrand itself must be zero, i.e. that each multiple of $n_x,n_y$ must be zero. 
+
+This relationship can be summarized as a pair of Lagrange equations:
+\[\frac{\partial F}{\partial x} - \frac{d}{d t}\frac{\partial F}{\partial x'}=0\]
+\[\frac{\partial F}{\partial y} - \frac{d}{d t}\frac{\partial F}{\partial y'}=0\]
+
 \section{The Two Mass, Three Spring System} % q4
+
+As we showed in Section 4, the kinetic energy of an individual spring is $\displaystyle T = \frac12k\dot x$, and the potential energy is $\displaystyle V = -\frac12kx^2$.  Using the generalization principle put forth in Section 5, we can derive the equations of motion of a two-mass, three-spring system.
+
+Consider a system with two masses.  The first mass ($m_1$) is connected to a wall by a spring with spring constant $k_1$.  It is also connected to the second mass, $m_2$, via a spring with spring constant $k_2$.  This second mass is connected to yet another wall, via a spring with spring constant $k_3$.
+
+Thus, we can determine the conserved Lagrangian $\mathscr L = K - V$:
+
+\[
+    \mathscr L = \frac12\left(m_1(\dot x_1)^2 + m_2(\dot  x_2)^2 - k_1x_1^2 - k_3x_2^2 - k_2(x_2 - x_1)^2\right)
+\]
+
+The action integral is simply $J = \int \mathscr L ~ dt$, and the general Euler-Lagrange equation can be expressed as two equations:
+
+\[\frac{\partial \mathscr L}{\partial x_1} - \frac{d}{d t}\frac{\partial \mathscr L}{\partial \dot x_1}=0\]
+\[\frac{\partial \mathscr L}{\partial x_2} - \frac{d}{d t}\frac{\partial \mathscr}{\partial \dot x_2}=0\]
+
+These equations resolve to
+
+\[0 = -\left(m_1(\ddot x_1) + k_1x_1 - k_2(x_2 - x_1)\right)\]
+\[0 = -\left(m_2(\ddot  x_2) + k_3x_2 + k_2(x_2 - x_1)\right)\]
+
+This result is the same one would get from analyzing the system using $F=ma$. The benefit of the Euler-Lagrange method is one does not have to displace the masses. It also eliminates the need to be concerned with direction, since energy is a scalar, unlike force, which is a vector.  
+
 
 \section{The Ray Equation; Fermat's Principle} % q5
 
@@ -260,80 +340,57 @@ The velocity of an object in 2D can be broken down into its basis component, and
 
 Then the total time taken can be calculated by
 \[T = \int_P \frac{ds}{c(x,y)} = \int_P \frac{\sqrt{x'^2+y'^2}dt}{c(x,y)} = \int_PF(t,x,x',y,y')dt\]
-\[text{ where }F(t,x,x',y,y') = \frac{\sqrt{x'^2+y'^2}}{c(x,y)}\]
+\[\text{ where }F(t,x,x',y,y') = \frac{\sqrt{x'^2+y'^2}}{c(x,y)}\]
 
-To minimize time, the variation needs to be stationary at zero pertubation. $n_x$ and $n_y$ are small pertubations to the system.
-
-\begin{ceqn}
-    \begin{align*}
-        \delta T &= \left.\frac{d T(t,x+\epsilon n_x, y+\epsilon n_y,x'+\epsilon n'_x,y'+\epsilon n'_y)}{d\epsilon}\right|_{\epsilon=0} = 0\\
-        &= \int \left(\frac{\partial F}{\partial x}n_x + \frac{\partial F}{\partial x'}n_x' + \frac{\partial F}{\partial y}n_y + \frac{\partial F}{\partial y'}n_y'\right)\\
-        &= \int \left(\frac{\partial F}{\partial x}n_x + \frac{\partial F}{\partial x'}\frac{d n_x}{dt} + \frac{\partial F}{\partial y}n_y + \frac{\partial F}{\partial y'}\frac{d n_y}{dt}\right)\\
-        &= \int \left(\frac{\partial F}{\partial x}n_x - n_x\frac{d}{dt}\frac{\partial F}{\partial x'} + \frac{\partial F}{\partial y}n_y - n_y\frac{d}{dt}\frac{\partial F}{\partial y'}\right)\\
-        &= \int \left(\left[\frac{\partial F}{\partial x} - \frac{d}{dt}\frac{\partial F}{\partial x'}\right]n_x + \left[\frac{\partial F}{\partial y} - \frac{d}{dt}\frac{\partial F}{\partial y'}\right]n_y\right)dt = 0\\
-    \end{align*}
-\end{ceqn}
-
-Which can be summarized as a pair of lagrange equations
-$$\frac{\partial F}{\partial x} = \frac{d}{d t}\frac{\partial F}{\partial x'} \qquad 1)$$
-$$\frac{\partial F}{\partial y} = \frac{d}{d t}\frac{\partial F}{\partial y'}\qquad 2)$$
-
-Carry out the derivation for equation 1(i.e. the x curve).
-$$\frac{\partial F}{\partial x} = \sqrt{x'^2+y'^2}\frac{\partial}{\partial x}\frac{1}{c(x,y)} = -\frac{\sqrt{x'^2+y'^2}}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}$$
+Carry out the derivation for the curve $x(t)$.
+\[\frac{\partial F}{\partial x} = \sqrt{x'^2+y'^2}\frac{\partial}{\partial x}\frac{1}{c(x,y)} = -\frac{\sqrt{x'^2+y'^2}}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}\]
 
 use the fact that $x' = \frac{dx}{dt}$
-$$\frac{d}{d t} \frac{\partial F}{\partial x'} = \frac{d}{dt} \frac{\partial}{\partial x'}\frac{\sqrt{x'^2+y'^2}}{c(x,y)} = \frac{d}{dt} \frac{x'}{c(x,y)\sqrt{x'^2+y'^2}} = \frac{d}{dt} \frac{dx}{c(x,y)\sqrt{x'^2+y'^2}dt}$$
+\[\frac{d}{d t} \frac{\partial F}{\partial x'} = \frac{d}{dt} \frac{\partial}{\partial x'}\frac{\sqrt{x'^2+y'^2}}{c(x,y)} = \frac{d}{dt} \frac{x'}{c(x,y)\sqrt{x'^2+y'^2}} = \frac{d}{dt} \frac{dx}{c(x,y)\sqrt{x'^2+y'^2}dt}\]
 
 We can convert the independent variable form t to s by multiplying both side of equation 1 by $\frac{dt}{ds} = (x'^+y'^2)^{\frac{1}{2}}$:
-$$\frac{\partial F}{\partial x}\frac{dt}{ds} = -(x'^+y'^2)^{\frac{1}{2}}\frac{\sqrt{x'^2+y'^2}}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x} = -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}$$
+\[\frac{\partial F}{\partial x}\frac{dt}{ds} = -(x'^+y'^2)^{\frac{1}{2}}\frac{\sqrt{x'^2+y'^2}}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x} = -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}\]
 
 Using chain rule and the fact that $ds = (x'^+y'^2)^{\frac{1}{2}} dt$:
-$$\frac{d}{d t} \frac{\partial F}{\partial x'} \frac{dt}{ds} = \frac{dt}{ds}\frac{d}{dt} \frac{dx}{c(x,y)\sqrt{x'^2+y'^2}dt} = \frac{d}{ds}\frac{dx}{c(x,y)ds}$$.
+\[\frac{d}{d t} \frac{\partial F}{\partial x'} \frac{dt}{ds} = \frac{dt}{ds}\frac{d}{dt} \frac{dx}{c(x,y)\sqrt{x'^2+y'^2}dt} = \frac{d}{ds}\frac{dx}{c(x,y)ds}\].
 
-The exact same procedure can be carry out on equation 2, which together would yield the following system:
-$$\frac{d}{ds}\frac{1}{c(x,y)}\frac{dx}{ds} = -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}$$
-$$\frac{d}{ds}\frac{1}{c(x,y)}\frac{dy}{ds} = -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial y}$$
-\\
-
+The exact same procedure can be carry out on $y(t)$ curve, which together would yield the following system:
+\begin{align*}
+\frac{d}{ds}\frac{1}{c(x,y)}\frac{dx}{ds} &= -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}\\
+\frac{d}{ds}\frac{1}{c(x,y)}\frac{dy}{ds} &= -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial y}
+\end{align*}
 In fact, the system can be generalized into
-$$\frac{d}{ds} \frac{1}{c(\vec{r})}\frac{d\vec{r}}{ds} = -\frac{1}{c(\vec{r})^2}\nabla c(\vec{r})$$
-Where $\vec{r}$ is the position vector of the object and $\nabla$ is the gradient, and the expressioin describe a n-equation system component wise.\\
-
+\[\frac{d}{ds} \frac{1}{c(\vec{r})}\frac{d\vec{r}}{ds} = -\frac{1}{c(\vec{r})^2}\nabla c(\vec{r})\]
+Where $\vec{r}$ is the position vector of the object and $\nabla$ is the gradient operator, the expression describe a n-equation system component wise.\\
 Taking $\vec{r} = (x,y)$ would yield the result derived above.\\
 
 Let's consider ray propagation in a Gradient index (GRIN) medium such as the lens in our eye. Assume the medium is a cylinder shape, the speed of light (i.e. refractive index) varies based on distance from the central optical axis:
-$$c = \frac{c_0}{a\sqrt{1-(cr)^2}}$$
+\[c = \frac{c_0}{a\sqrt{1-(cr)^2}}\]
 where $r$ is radius in cylindrical coordinate, and $a,b$ are arbitrary constants, and $c_0$ is the speed of light in vacuum.
 
 Choosing s = z (we are interested in the distance from the center as the ray propagate further into the cylinder, i.e. $r(z)$), the ray equation describes that:
-\begin{ceqn}
-    \begin{align*}
-        \frac{d}{dz} \frac{a\sqrt{1-(cr)^2}}{c_0}\frac{d r}{dz} &= -\frac{a^2(1-(cr)^2)}{c_0^2}\nabla \frac{c_0}{a\sqrt{1-(cr)^2}}\\
-        \frac{a\sqrt{1-(cr)^2}}{c_0}\frac{d^2 r}{dz^2} &= -\frac{a(1-(cr)^2)}{c_0}\frac{\partial}{\partial r} \frac{1}{\sqrt{1-(cr)^2}}\\
-        \sqrt{1-(cr)^2}\frac{d^2 r}{dz^2} &= -(1-(cr)^2)\frac{\partial}{\partial r} \frac{1}{\sqrt{1-(cr)^2}}\\
-        \frac{d^2 r}{dz^2} &= -\sqrt{1-(cr)^2} \frac{b^2r}{(1-(cr)^2)^{\frac{3}{2}}}\\
-        \frac{d^2 r}{dz^2} &= -\frac{b^2r}{(1-(cr)^2)}\\
-    \end{align*}
-\end{ceqn}
+\begin{align*}
+    \frac{d}{dz} \frac{a\sqrt{1-(cr)^2}}{c_0}\frac{d r}{dz} &= -\frac{a^2(1-(cr)^2)}{c_0^2}\nabla \frac{c_0}{a\sqrt{1-(cr)^2}}\\
+    \frac{a\sqrt{1-(cr)^2}}{c_0}\frac{d^2 r}{dz^2} &= -\frac{a(1-(cr)^2)}{c_0}\frac{\partial}{\partial r} \frac{1}{\sqrt{1-(cr)^2}}\\
+    \sqrt{1-(cr)^2}\frac{d^2 r}{dz^2} &= -(1-(cr)^2)\frac{\partial}{\partial r} \frac{1}{\sqrt{1-(cr)^2}}\\
+    \frac{d^2 r}{dz^2} &= -\sqrt{1-(cr)^2} \frac{b^2r}{(1-(cr)^2)^{\frac{3}{2}}}\\
+    \frac{d^2 r}{dz^2} &= -\frac{b^2r}{(1-(cr)^2)}\\
+\end{align*}
 
 This is a second order autonomous differential equation. We can simply the express by assuming $cr<<1$, the ODE then reduce to a simple \textit{second order linear homogeneous non-constant coefficient differential equation}, which we know the answer already:
-\begin{ceqn}
-    \begin{align*}
-        \frac{d^2 r}{dz^2} &= -\frac{b^2r}{(1-(cr)^2)}\\
-        &\approx -b^2 r\\
-        \implies r(z) &= A\cos(cz)+B\sin(cz)
-    \end{align*}
-\end{ceqn}
+\begin{align*}
+    \frac{d^2 r}{dz^2} &= -\frac{b^2r}{(1-(cr)^2)}\\
+    &\approx -b^2 r\\
+    \implies r(z) &= A\cos(cz)+B\sin(cz)
+\end{align*}
 Solving for the initial condition where the light enter at position $a$ with a slope of $b$
-\begin{ceqn}
-    \begin{align*}
-        r(0) &= A\cos(c0)+B\sin(c0) = a \\
-        &\implies A = a\\
-        r'(0) &= -cA\sin(c0)+cB\cos(c0) = b \\
-        &\implies B = \frac{b}{c}\\
-        r(z) &= a\cos(cz)+\frac{b}{c}\sin(cz)
-    \end{align*}
-\end{ceqn}
+\begin{align*}
+    r(0) &= A\cos(c0)+B\sin(c0) = a \\
+    &\implies A = a\\
+    r'(0) &= -cA\sin(c0)+cB\cos(c0) = b \\
+    &\implies B = \frac{b}{c}\\
+    r(z) &= a\cos(cz)+\frac{b}{c}\sin(cz)
+\end{align*}
 
 The ray oscillates back and forth across the optical axis.
 
