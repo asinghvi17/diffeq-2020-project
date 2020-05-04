@@ -1,5 +1,5 @@
 using CairoMakie, AbstractPlotting, MakieLayout
-using DifferentialEquations, StaticArrays
+using DifferentialEquations, StaticArrays, ModelingToolkit
 
 function spring(u, p, t)
     m, k = p
@@ -41,7 +41,7 @@ save("spring_mass_1.pdf", scene)
     return @SVector[
         # D(x₁) = ẋ₁
         ẋ₁,
-        # D(D(x₁)) = (k₁x₁ - k₂(x₂ - x₁))/m₁
+        # D(D(x₁)) = (k₁x₁ - k₂(x₁ - x₂))/m₁
         -(k₁ * x₁ + k₂ * (x₁ - x₂))/m₁,
         # D(x₂) = ẋ₂
         ẋ₂,
@@ -110,3 +110,39 @@ leg = layout[2, 1] = LLegend(
 rowsize!(layout, 2, Fixed(20))
 rowgap!(layout, 0)
 save("3spring2mass.pdf", scene)
+
+
+## MTK experimentation
+(t, (k₁, k₂, k₃), (m₁, m₂)) = @parameters t k[1:3] m[1:2]
+(x₁, x₂), = @variables x[1:2](t)
+@derivatives D'~t
+
+eqs = [
+    D(D(x₁)) ~ -(k₁ * x₁ + k₂ * (x₁ - x₂))/m₁,
+    D(D(x₂)) ~ -(k₃ * x₂ + k₂ * (x₂ - x₁))/m₂,
+]
+
+sys = ode_order_lowering(ODESystem(eqs, t, [x₁, x₂], [k₁, k₂, k₃, m₁, m₂]))
+
+u0 = [
+    sys.x₁ => -1.0,
+    sys.x₂ =>  1.0,
+    sys.x₁ˍt => 0.0,
+    sys.x₂ˍt => 0.0,
+]
+
+p = [
+    sys.m₁ => 1.0,
+    sys.m₂ => 1.0,
+    sys.k₁ => 40.0,
+    sys.k₂ => 40.0,
+    sys.k₃ => 40.0,
+]
+
+tspan = (0.0, 5.0)
+
+prob = ODEProblem(sys, u0, tspan, p)
+
+sol = @benchmark solve(prob, Vern9())
+
+Plots.plot(sol; vars = [:x₁, :x₂])

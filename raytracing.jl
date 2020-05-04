@@ -17,7 +17,7 @@ colors = @. 1 / (sqrt(1 - c * abs(yvals)))
 heatmap!(ax, 0..10, -1..1, colors; interpolate = true, colormap = cgrad(:grays; alpha = .5))
 
 
-function r(z; a = 1, b = 0, c = 1)
+function r(z; a = .6, b = 0, c = .1)
     return if z < 0
         a
     else
@@ -29,6 +29,117 @@ lines!(ax, zs, r.(zs); linewidth = .5, color = AbstractPlotting.wong_colors[2])
 lines!(ax, zs, r.(zs; a = -.3); linewidth = .5, color = AbstractPlotting.wong_colors[1])
 
 save("rays.png", scene; px_per_unit = 10)
-save("rays.eps", scene)
-save("rays.svg", scene)
-save("rays.pdf", scene)
+
+################################################################################
+#                               GRIN index ray                                 #
+################################################################################
+
+function ray(u, p, t)
+    r,ṙ = u
+
+    return @SVector[ṙ, -p^2 * r / (1-p^2*r^2)]*(1-ṙ)
+end
+
+function r_analytical(z; a = 0.6, b = 0, c = 0.1)
+    return if z < 0
+        b*z+a
+    else
+        a * cos(c * z) + b / c * sin(c * z)
+    end
+end
+
+scene, layout = layoutscene(3, resolution = (340, 180))
+ax = layout[1, 1] = LAxis(
+    scene;
+    title = "Straight light rays",
+    # ax.title = "Angled Light"
+    xlabel = "𝑧",
+    ylabel = "𝑟(𝑧)",
+    xlabelpadding = .5,
+    ylabelpadding = .5,
+    xticklabelpad = 2,
+    yticklabelpad = 2,
+    xticklabelsize = 12,
+    yticklabelsize = 12,
+)
+ax2 = layout[1, 2] = LAxis(
+    scene;
+    width = Fixed(40),
+)
+hidedecorations!(ax2)
+ax2.xgridvisible = true
+ax2.xticklabelsvisible = false
+ax2.ygridvisible = true
+ax2.yticklabelsvisible = false
+ax2.title = "𝜂(𝑟)"
+ax2.yaxisposition = :right
+ax2.xlabel = "𝑟"
+ax2.ylabel = "𝜂"
+ri_range = LinRange(-0.6, 0.6, 1000)
+lines!(ax2, (y -> 1/sqrt(1-(.1)^2 * y^2)).(ri_range), ri_range)
+
+
+save("a.png", scene; px_per_unit = 10)
+
+zs = LinRange(-5, 100, 1000)
+lines!(ax, zs, r.(zs); linewidth = 1, color = AbstractPlotting.wong_colors[2])
+lines!(ax, zs, r.(zs; a = -0.1); linewidth = 1, color = AbstractPlotting.wong_colors[1])
+lines!(ax, zs, r.(zs; a = -0.4); linewidth = 1, color = AbstractPlotting.wong_colors[3])
+# lines!(ax, zs, r.(zs; a = -0.6, b = 0.1); linewidth = 1, color = AbstractPlotting.wong_colors[2])
+# lines!(ax, zs, r.(zs; a = 0.4, b = -0.2); linewidth = 1, color = AbstractPlotting.wong_colors[2])
+
+
+function rn(z; a = 0.6, b = 0.0, c = 0.1)
+    prob = ODEProblem(ray, [a, b], (0.0, 100.0), p = c)
+    sol = solve(prob; save_idxs = 1)
+    return (i -> if i < 0
+        return b*i+a
+    else
+        return sol(i)
+    end).(z)
+end
+# lines!(ax, zs, rn.(zs); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
+# lines!(ax, zs, rn.(zs; a = -0.1); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
+# lines!(ax, zs, rn.(zs; a = -0.4); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
+# lines!(ax, zs, rn.(zs; a = -0.6, b = 0.1); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
+# lines!(ax, zs, rn.(zs; a = 0.4, b = -0.2); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
+
+save("ray_comp.pdf", scene)
+# save("ray_comp_angled.pdf", scene)
+
+
+scene_angled, layout_angled = layoutscene(3, resolution = (340, 180))
+ax_angled = layout_angled[1, 1] = LAxis(
+    scene_angled;
+    title = "Angled light rays",
+    xlabel = "𝑧",
+    ylabel = "𝑟(𝑧)",
+    xlabelpadding = .5,
+    ylabelpadding = .5,
+    xticklabelpad = 2,
+    yticklabelpad = 2,
+    xticklabelsize = 12,
+    yticklabelsize = 12,
+)
+ax2_angled = layout_angled[1, 2] = LAxis(
+    scene_angled;
+    width = Fixed(40),
+)
+hidedecorations!(ax2_angled)
+ax2_angled.xgridvisible = true
+ax2_angled.xticklabelsvisible = false
+ax2_angled.ygridvisible = true
+ax2_angled.yticklabelsvisible = false
+ax2_angled.title = "𝜂(𝑟)"
+ax2_angled.yaxisposition = :right
+ax2_angled.xlabel = "𝑟"
+ax2_angled.ylabel = "𝜂"
+ri_angled_range = LinRange(-0.6, 0.6, 1000)
+lines!(ax2_angled, (y -> 1/sqrt(1-(.1)^2 * y^2)).(ri_angled_range), ri_angled_range)
+
+lines!(ax_angled, zs, rn.(zs; a = -0.6, b = 0.1); linewidth = 1, color = AbstractPlotting.wong_colors[2])
+lines!(ax_angled, zs, rn.(zs; a = 0.4, b = -0.2); linewidth = 1, color = AbstractPlotting.wong_colors[1])
+
+save("ray_comp_angled.pdf", scene_angled)
+
+save("ray_comp_angled.png", scene_angled; px_per_unit = 10)
