@@ -1,6 +1,19 @@
 using CairoMakie, AbstractPlotting, MakieLayout
 using DifferentialEquations, StaticArrays, ModelingToolkit
 
+function plot_spring_sol(sol)
+    scene, layout = layoutscene()
+    ax = layout[1, 1] = LAxis(scene)
+    trange = LinRange(extrema(sol.t)..., 1000)
+
+    data = sol(trange)
+
+    lines!(ax, trange, data[1, :]; color = AbstractPlotting.wong_colors[2], linewidth = .5)
+    lines!(ax, trange, data[2, :]; color = AbstractPlotting.wong_colors[1], linewidth = .5)
+
+    return scene
+end
+
 function spring(u, p, t)
     m, k = p
     return @SVector[
@@ -76,7 +89,7 @@ sys = ode_order_lowering(ODESystem(eqs, t, [x₁, x₂], [k₁, k₂, k₃, m₁
 u0 = [
     sys.x₁ => -1.0,
     sys.x₂ =>  1.0,
-    sys.x₁ˍt => 0.0,
+    sys.x₁ˍt => 5,
     sys.x₂ˍt => 0.0,
 ]
 
@@ -88,21 +101,23 @@ p = [
     sys.k₃ => 40.0,
 ]
 
-tspan = (0.0, 5.0)
+tspan = (0.0, 10.0)
 
 prob = ODEProblem(sys, u0, tspan, p)
 
 sol = solve(prob, Vern9())
 
+plot_spring_sol(sol)
 
-
+function energy(resid, u, p, t)
+end
 
 scene, layout = layoutscene(5, resolution = (200, 170), font = "CMU Serif Roman")
 ax = layout[1, 1]  = LAxis(scene)
 ax.xlabel = "𝑡"
 ax.ylabel = "𝑥"
 ax.xticklabelpad = 2
-ax.yticklabelpad = 2
+ax.yticklabelpad = 3
 ax.xlabelpadding = 0
 ax.ylabelpadding = 0
 
@@ -115,7 +130,7 @@ lines!(ax, trange, data[2, :]; color = AbstractPlotting.wong_colors[1], linewidt
 leg = layout[2, 1] = LLegend(
     scene,
     ax.scene.plots,
-    ["𝑥1", "𝑥2"];
+    ["mass 1", "mass 2"];
     tellwidth = false, rowgap = 0.0,
     framewidth = 0, padding = (0,0,0,0),
     patchlabelgap = 3, patchsize = (10, 10),
@@ -125,7 +140,7 @@ leg = layout[2, 1] = LLegend(
 
 rowsize!(layout, 2, Fixed(20))
 rowgap!(layout, 0)
-save("3spring2mass.pdf", scene)
+save("3spring2mass_with_velocity.pdf", scene)
 
 
 ## MTK experimentation

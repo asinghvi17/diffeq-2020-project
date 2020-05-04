@@ -195,9 +195,9 @@ The constants $C_1$ and $C_2$ are really just the initial velocity and position 
 
 \section{The Brachistochrone Problem} % q3
 
-The brachistochrone curve is simply the curve along which a frictionless particle will slide in the minimum time. Brachistochrone trajectories are especially interesting in the context of space travel, since they provide the most efficient trajectories with which to traverse long distances. It also has applications in our everyday lives; for example, creating efficient roller coasters, or 
+The brachistochrone curve is simply the curve along which a frictionless particle will slide in the minimum time. Brachistochrone trajectories are especially interesting in the context of space travel, since they provide the most efficient trajectories with which to traverse long distances. It also has applications in our everyday lives; for example, creating efficient roller coasters, or
 
-The problem is, specifically, to find the curve $y(x)$ between points $y(a) = A$ and $y(b) = B$, along which a particle will slide in the minimum time. We need to find a balance between the speed of the particle and the length of the path. 
+The problem is, specifically, to find the curve $y(x)$ between points $y(a) = A$ and $y(b) = B$, along which a particle will slide in the minimum time. We need to find a balance between the speed of the particle and the length of the path.
 
 Here, we will trace out Johann Bernoulli's solution to the brachistochrone problem, and justify all the steps he took.
 
@@ -290,7 +290,7 @@ From this, we can directly solve for the Euler-Lagrange equations:
   &⟹ m\ddot x + kx = 0\\
 \end{align*}
 
-This last expression is the differential equation which governs spring motion.  
+This last expression is the differential equation which governs spring motion.
 
 \section{Generalising the Lagrangian: Degrees of Freedom} % q6
 
@@ -395,9 +395,17 @@ This result is the same one would get from analyzing the system using $F=ma$. Th
 \begin{figure}[ht!]
     \centering
     \includegraphics{3spring2mass.pdf}
-    \caption{A timeseries view of the three-spring, two-mass system with initial condition $x_1=0,\dot{x}_1=-1,x_2=0,\dot{x}_2=-5$.}
+    \caption{A timeseries view of the three-spring, two-mass system with initial condition $x_1=-1,\dot{x}_1=0, x_2=1,\dot{x}_2=0$.}
     \label{fig: tstm}
 \end{figure}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics{3spring2mass_with_velocity.pdf}
+    \caption{A timeseries view of the three-spring, two-mass system with initial condition $x_1=-1,\dot{x}_1=5, x_2=1,\dot{x}_2=0$.}
+    \label{fig: tstm_with_vel}
+\end{figure}
+
 
 
 \section{The Ray Equation; Fermat's Principle} % q5
