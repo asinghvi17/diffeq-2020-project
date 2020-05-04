@@ -104,7 +104,7 @@ aps,
              %  but any date may be explicitly specified
 
 \begin{abstract}
-    The Euler-Lagrange equations are ewwler.  Here's what we can do to make them...kewwler.
+    
 \end{abstract}
 
 \maketitle
@@ -482,11 +482,26 @@ The ray oscillates back and forth across the optical axis, as shown in Figure 5,
       \includegraphics[width=.9\linewidth]{ray_comp_angled.pdf}
       \caption{Light Entering in an angle}
     \end{subfigure}
-    \caption{Comparison between approximated solution and numerical solution to the original ODE.\\$\qquad\qquad$Blue is approximation, Orange is numerical}
+    \caption{Sample trajectories (numerically solved) of light rays in our nonlinear medium.}
     \label{fig: ray_comp}
 \end{figure}
 
-Figure 6 shows a comparison between the approximated result (in Blue) and the solution to the original equation by numerical method (in Orange), again the light enters the cylinder at $z=0$. The two line very closely overlap for light entering straight and in an angle, hence a valid approximation for $cr << 1$.
+
+\begin{figure}
+    \begin{subfigure}{.5\textwidth}
+      \includegraphics[width=.9\linewidth]{ray_comp.pdf}
+      \caption{Light Entering straight}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+      \includegraphics[width=.9\linewidth]{ray_comp_angled.pdf}
+      \caption{Light Entering in an angle}
+    \end{subfigure}
+    \caption{Sample trajectories (numerically solved) of light rays in our nonlinear medium.}
+    \label{fig: ray_comp}
+\end{figure}
+
+
+\Fref{fig: anal_sim} shows a comparison between the approximated result (in Blue) and the solution to the original equation by numerical method (in Orange), again the light enters the cylinder at $z=0$. The two line very closely overlap for light entering straight and in an angle, hence a valid approximation for $cr << 1$.
 
 \section{Conclusion}
 
