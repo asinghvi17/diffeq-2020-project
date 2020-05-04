@@ -134,7 +134,7 @@ ax2_angled.title = "𝜂(𝑟)"
 ax2_angled.yaxisposition = :right
 ax2_angled.xlabel = "𝑟"
 ax2_angled.ylabel = "𝜂"
-ri_angled_range = LinRange(-0.6, 0.6, 1000)
+ri_angled_range = LinRange(-2, 2, 1000)
 lines!(ax2_angled, (y -> 1/sqrt(1-(.1)^2 * y^2)).(ri_angled_range), ri_angled_range)
 
 lines!(ax_angled, zs, rn.(zs; a = -0.6, b = 0.1); linewidth = 1, color = AbstractPlotting.wong_colors[2])
