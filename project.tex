@@ -35,6 +35,7 @@ aps,
 \usepackage{nccmath}
 \usepackage{tikz}
 \usepackage{subcaption}
+\usepackage{float}
 % \endofdump
 
 \usetikzlibrary{calc, patterns, decorations.pathmorphing, decorations.markings}
@@ -339,7 +340,7 @@ This relationship can be summarized as a pair of Lagrange equations:
 \section{The Two Mass, Three Spring System} % q4
 
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}[every node/.style = {draw, outer sep = 0pt, thick}]
         \node at (0, 0) (M) [minimum width=1cm, minimum height=2.5cm] {$m_1$};
@@ -390,7 +391,7 @@ These equations resolve to
 \[0 = -\left(m_1(\ddot x_1) + k_1x_1 - k_2(x_2 - x_1)\right)\]
 \[0 = -\left(m_2(\ddot  x_2) + k_3x_2 + k_2(x_2 - x_1)\right)\]
 
-This result is the same one would get from analyzing the system using $F=ma$. The benefit of the Euler-Lagrange method is one does not have to displace the masses. It also eliminates the need to be concerned with direction, since energy is a scalar, unlike force, which is a vector.
+This result is the same one would get from analyzing the system using $F=ma$. The benefit of the Euler-Lagrange method is one does not have to displace the masses. It also eliminates the need to be concerned with direction, since energy is a scalar quantity, unlike force, which is a vector quantity.
 
 \begin{figure}[ht!]
     \centering
@@ -423,10 +424,10 @@ Solving the Euler-Lagrange equation for the curve $x(t)$.
 use the fact that $x' = \frac{dx}{dt}$
 \[\frac{d}{d t} \frac{\partial F}{\partial x'} = \frac{d}{dt} \frac{\partial}{\partial x'}\frac{\sqrt{x'^2+y'^2}}{c(x,y)} = \frac{d}{dt} \frac{x'}{c(x,y)\sqrt{x'^2+y'^2}} = \frac{d}{dt} \frac{dx}{c(x,y)\sqrt{x'^2+y'^2}dt}\]
 
-We can convert the independent variable form t to s by multiplying both side of equation 1 by $\frac{dt}{ds} = (x'^+y'^2)^{\frac{1}{2}}$:
-\[\frac{\partial F}{\partial x}\frac{dt}{ds} = -(x'^+y'^2)^{\frac{1}{2}}\frac{\sqrt{x'^2+y'^2}}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x} = -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}\]
+We can convert the independent variable form t to s by multiplying both side of equation 1 by $\frac{dt}{ds} = (x'^2+y'^2)^{\frac{1}{2}}$:
+\[\frac{\partial F}{\partial x}\frac{dt}{ds} = -(x'^2+y'^2)^{\frac{1}{2}}\frac{\sqrt{x'^2+y'^2}}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x} = -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}\]
 
-Using chain rule and the fact that $ds = (x'^+y'^2)^{\frac{1}{2}} dt$:
+Using chain rule and the fact that $ds = (x'^2+y'^2)^{\frac{1}{2}} dt$:
 \[\frac{d}{d t} \frac{\partial F}{\partial x'} \frac{dt}{ds} = \frac{dt}{ds}\frac{d}{dt} \frac{dx}{c(x,y)\sqrt{x'^2+y'^2}dt} = \frac{d}{ds}\frac{dx}{c(x,y)ds}\].
 
 The exact same procedure can be carry out on the $y(t)$ curve, which together would yield the following system:
@@ -469,12 +470,25 @@ Solving for the initial condition where the light enter at position $\alpha$ wit
     r(z) &= \alpha\cos(cz)+\frac{\beta}{c}\sin(cz)
 \end{align*}
 
-The ray oscillates back and forth across the optical axis, as shown in Figure 5, where the light enters the cylinder at $z=0$, and a lighter color indicating a faster speed of light. Both light, despite entering at different $r$ value, meet at the same $z$ when they reach $r = 0$. This property allows the GRIN medium to be a great candidate as a lens. In fact this is how human eyes, which is a GRIN material, focus the light for further object, as the light entering is essentially perpendicular to our eyes, the eye muscle shapes the lens into cylindrical shape to focus light into our receptor.
+The ray oscillates back and forth across the optical axis, as shown in \Fref{fig: rays}, where the light enters the cylinder at $z=0$, and a lighter color indicating a faster speed of light. Both light, despite entering at different $r$ value, meet at the same $z$ when they reach $r = 0$. This property allows the GRIN medium to be a great candidate as a lens. In fact this is how human eyes, which is a GRIN material, focus the light for further object, as the light entering is essentially perpendicular to our eyes, the eye muscle shapes the lens into cylindrical shape to focus light into our receptor.
 
 \begin{figure}
     \includegraphics{rays.pdf}
     \caption{Two rays of light enter into the nonlinear medium, and exhibit sinusoidal oscillations.}
     \label{fig: rays}
+\end{figure}
+
+\begin{figure}
+    \begin{subfigure}{.5\textwidth}
+      \includegraphics[width=.9\linewidth]{ray_sim.pdf}
+      \caption{Light Entering straight}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+      \includegraphics[width=.9\linewidth]{ray_sim_angled.pdf}
+      \caption{Light Entering in an angle}
+    \end{subfigure}
+    \caption{Sample trajectories (numerically solved) of light rays in our nonlinear medium.}
+    \label{fig: comp}
 \end{figure}
 
 \begin{figure}
@@ -490,19 +504,6 @@ The ray oscillates back and forth across the optical axis, as shown in Figure 5,
     \label{fig: anal_sim}
 \end{figure}
 
-
-\begin{figure}
-    \begin{subfigure}{.5\textwidth}
-      \includegraphics[width=.9\linewidth]{ray_sim.pdf}
-      \caption{Light Entering straight}
-    \end{subfigure}%
-    \begin{subfigure}{.5\textwidth}
-      \includegraphics[width=.9\linewidth]{ray_sim_angled.pdf}
-      \caption{Light Entering in an angle}
-    \end{subfigure}
-    \caption{Sample trajectories (numerically solved) of light rays in our nonlinear medium.}
-    \label{fig: comp}
-\end{figure}
 
 
 \Fref{fig: anal_sim} shows a comparison between the approximated result (in Blue) and the solution to the original equation by numerical method (in Orange), again the light enters the cylinder at $z=0$. The two line very closely overlap for light entering straight and in an angle, hence a valid approximation for $cr << 1$.
