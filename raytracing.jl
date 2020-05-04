@@ -11,10 +11,10 @@ ax.xticklabelsize = 8
 ax.yticklabelsize = 8
 
 # show the cylinder's refractive index
-yvals = ((x, y) -> y).(LinRange(-.99, .99, 100), LinRange(-.99, .99, 100)')
+yvals = ((x, y) -> y).((1:100), LinRange(-.6, .6, 100)')
 c = 1
-colors = @. 1 / (sqrt(1 - c * abs(yvals)))
-heatmap!(ax, 0..10, -1..1, colors; interpolate = true, colormap = cgrad(:grays; alpha = .5))
+colors = @. 1 / (sqrt(1 - .01 * abs2(yvals)))
+heatmap!(ax, 0..100, -.6 .. .6, colors; interpolate = true, colormap = cgrad(:grays; alpha = .8))
 
 
 function r(z; a = .6, b = 0, c = .1)
@@ -24,11 +24,12 @@ function r(z; a = .6, b = 0, c = .1)
         a * cos(c * z) + b / c * sin(c * z)
     end
 end
-zs = LinRange(-2, 10, 1000)
+zs = LinRange(-5, 100, 1000)
 lines!(ax, zs, r.(zs); linewidth = .5, color = AbstractPlotting.wong_colors[2])
 lines!(ax, zs, r.(zs; a = -.3); linewidth = .5, color = AbstractPlotting.wong_colors[1])
 
 save("rays.png", scene; px_per_unit = 10)
+save("rays.pdf", scene)
 
 ################################################################################
 #                               GRIN index ray                                 #
@@ -104,8 +105,8 @@ end
 # lines!(ax, zs, rn.(zs; a = -0.6, b = 0.1); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
 # lines!(ax, zs, rn.(zs; a = 0.4, b = -0.2); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
 
-save("ray_comp.pdf", scene)
-# save("ray_comp_angled.pdf", scene)
+save("ray_sim.pdf", scene)
+# save("ray_sim_angled.pdf", scene)
 
 
 scene_angled, layout_angled = layoutscene(3, resolution = (340, 180))
@@ -140,14 +141,14 @@ lines!(ax2_angled, (y -> 1/sqrt(1-(.1)^2 * y^2)).(ri_angled_range), ri_angled_ra
 lines!(ax_angled, zs, rn.(zs; a = -0.6, b = 0.1); linewidth = 1, color = AbstractPlotting.wong_colors[2])
 lines!(ax_angled, zs, rn.(zs; a = 0.4, b = -0.2); linewidth = 1, color = AbstractPlotting.wong_colors[1])
 
-save("ray_comp_angled.pdf", scene_angled)
+save("ray_sim_angled.pdf", scene_angled)
 
-save("ray_comp_angled.png", scene_angled; px_per_unit = 10)
+save("ray_sim_angled.png", scene_angled; px_per_unit = 10)
 
 
 ## anal sim comp
 
-scene_comp, layout_comp = layoutscene(3, resolution = (400, 250))
+scene_comp, layout_comp = layoutscene(3, resolution = (300, 180))
 ax_comp = layout_comp[1, 1] = LAxis(scene_comp)
 ax_comp.title = "Straight Light"
 # ax_comp.title = "Angled Light"
@@ -194,10 +195,9 @@ save("ray_comp.pdf", scene_comp)
 
 
 
-scene_comp_angled, layout_comp_angled = layoutscene(3, resolution = (400, 250))
+scene_comp_angled, layout_comp_angled = layoutscene(3, resolution = (300, 180))
 ax_comp_angled = layout_comp_angled[1, 1] = LAxis(scene_comp_angled)
-ax_comp_angled.title = "Straight Light"
-# ax_comp_angled.title = "Angled Light"
+ax_comp_angled.title = "Angled Light"
 ax_comp_angled.xlabel = "𝑧"
 ax_comp_angled.ylabel = "𝑟(𝑧)"
 ax_comp_angled.xlabelpadding = .5
@@ -237,4 +237,4 @@ end
 lines!(ax_comp_angled, zs, rn.(zs; a = -0.6, b = 0.1); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
 lines!(ax_comp_angled, zs, rn.(zs; a = 0.4, b = -0.2); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
 
-save("ray_comp.pdf", scene_comp)
+save("ray_comp_angled.pdf", scene_comp_angled)
