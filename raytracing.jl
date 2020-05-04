@@ -143,3 +143,98 @@ lines!(ax_angled, zs, rn.(zs; a = 0.4, b = -0.2); linewidth = 1, color = Abstrac
 save("ray_comp_angled.pdf", scene_angled)
 
 save("ray_comp_angled.png", scene_angled; px_per_unit = 10)
+
+
+## anal sim comp
+
+scene_comp, layout_comp = layoutscene(3, resolution = (400, 250))
+ax_comp = layout_comp[1, 1] = LAxis(scene_comp)
+ax_comp.title = "Straight Light"
+# ax_comp.title = "Angled Light"
+ax_comp.xlabel = "𝑧"
+ax_comp.ylabel = "𝑟(𝑧)"
+ax_comp.xlabelpadding = .5
+ax_comp.ylabelpadding = .5
+ax_comp.xticklabelpad = 2
+ax_comp.yticklabelpad = 2
+ax_comp.xticklabelsize = 12
+ax_comp.yticklabelsize = 12
+
+function r(z; a = 0.6, b = 0, c = 0.1)
+    return if z < 0
+        b*z+a
+    else
+        a * cos(c * z) + b / c * sin(c * z)
+    end
+end
+zs = LinRange(-5, 100, 1000)
+lines!(ax_comp, zs, r.(zs); linewidth = 1, color = AbstractPlotting.wong_colors[2])
+lines!(ax_comp, zs, r.(zs; a = -0.1); linewidth = 1, color = AbstractPlotting.wong_colors[2])
+lines!(ax_comp, zs, r.(zs; a = -0.4); linewidth = 1, color = AbstractPlotting.wong_colors[2])
+# lines!(ax_comp, zs, r.(zs; a = -0.6, b = 0.1); linewidth = 1, color = AbstractPlotting.wong_colors[2])
+# lines!(ax_comp, zs, r.(zs; a = 0.4, b = -0.2); linewidth = 1, color = AbstractPlotting.wong_colors[2])
+
+
+function rn(z; a = 0.6, b = 0.0, c = 0.1)
+    if z < 0
+        return b*z+a
+    else
+        prob = ODEProblem(ray, [a, b], (0.0, 100.0), p = c)
+        sol = solve(prob; save_idxs = 1)
+        return sol(z)
+    end
+end
+lines!(ax_comp, zs, rn.(zs); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
+lines!(ax_comp, zs, rn.(zs; a = -0.1); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
+lines!(ax_comp, zs, rn.(zs; a = -0.4); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
+# lines!(ax_comp, zs, rn.(zs; a = -0.6, b = 0.1); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
+# lines!(ax_comp, zs, rn.(zs; a = 0.4, b = -0.2); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
+
+save("ray_comp.pdf", scene_comp)
+
+
+
+scene_comp_angled, layout_comp_angled = layoutscene(3, resolution = (400, 250))
+ax_comp_angled = layout_comp_angled[1, 1] = LAxis(scene_comp_angled)
+ax_comp_angled.title = "Straight Light"
+# ax_comp_angled.title = "Angled Light"
+ax_comp_angled.xlabel = "𝑧"
+ax_comp_angled.ylabel = "𝑟(𝑧)"
+ax_comp_angled.xlabelpadding = .5
+ax_comp_angled.ylabelpadding = .5
+ax_comp_angled.xticklabelpad = 2
+ax_comp_angled.yticklabelpad = 2
+ax_comp_angled.xticklabelsize = 12
+ax_comp_angled.yticklabelsize = 12
+
+function r(z; a = 0.6, b = 0, c = 0.1)
+    return if z < 0
+        b*z+a
+    else
+        a * cos(c * z) + b / c * sin(c * z)
+    end
+end
+zs = LinRange(-5, 100, 1000)
+# lines!(ax_comp_angled, zs, r.(zs); linewidth = 1, color = AbstractPlotting.wong_colors[2])
+# lines!(ax_comp_angled, zs, r.(zs; a = -0.1); linewidth = 1, color = AbstractPlotting.wong_colors[2])
+# lines!(ax_comp_angled, zs, r.(zs; a = -0.4); linewidth = 1, color = AbstractPlotting.wong_colors[2])
+lines!(ax_comp_angled, zs, r.(zs; a = -0.6, b = 0.1); linewidth = 1, color = AbstractPlotting.wong_colors[2])
+lines!(ax_comp_angled, zs, r.(zs; a = 0.4, b = -0.2); linewidth = 1, color = AbstractPlotting.wong_colors[2])
+
+
+function rn(z; a = 0.6, b = 0.0, c = 0.1)
+    if z < 0
+        return b*z+a
+    else
+        prob = ODEProblem(ray, [a, b], (0.0, 100.0), p = c)
+        sol = solve(prob; save_idxs = 1)
+        return sol(z)
+    end
+end
+# lines!(ax_comp_angled, zs, rn.(zs); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
+# lines!(ax_comp_angled, zs, rn.(zs; a = -0.1); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
+# lines!(ax_comp_angled, zs, rn.(zs; a = -0.4); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
+lines!(ax_comp_angled, zs, rn.(zs; a = -0.6, b = 0.1); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
+lines!(ax_comp_angled, zs, rn.(zs; a = 0.4, b = -0.2); linewidth = 0.6, color = AbstractPlotting.wong_colors[1])
+
+save("ray_comp.pdf", scene_comp)
