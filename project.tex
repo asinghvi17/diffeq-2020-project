@@ -34,6 +34,7 @@ aps,
 \usepackage{soul}
 \usepackage{nccmath}
 \usepackage{tikz}
+\usepackage{subcaption}
 % \endofdump
 
 \usetikzlibrary{calc, patterns, decorations.pathmorphing, decorations.markings}
@@ -117,7 +118,7 @@ aps,
 For systems with one degree of freedom, the \emph{action integral}, called $J(y)$, can be expressed as:
 
 \begin{equation}\label{eq: action}
-    J(y) = \int_0^T F(t, y, \dot y) ~ dt
+    J(y) = \int_a^b F(x, y, \dot y) ~ dx
 \end{equation}
 
 To solve for the equations of motion of a mechanical system, we can attempt to find function $y(t)$ which is a \emph{stationary point} of the action integral; this means that the trajectory which $y(t)$ takes conserves the quantity within the action integral.  This function must satisfy several constraints; it must satisfy the boundary conditions $y(a) = A$, and $y(b) = B$, and it must have at least two continuous derivatives.
@@ -132,10 +133,10 @@ Consider a perturbation to the initial function, of magnitude $0 < \epsilon \ll 
 $\eta(t)$ is called the \textit{perturbation function}; it is simply a function which obeys $\eta(a) = 0$ and $eta(b)$ = 0.  Now, we can observe the behaviour of the action integral as a function of $\epsilon$:
 
 \[
-    \phi(\epsilon) = J(y + \epsilon \cdot \eta) = \int_0^T F(t, y + \epsilon \eta, \dot y + \epsilon \dot \eta) ~ dt
+    \phi(\epsilon) = J(y + \epsilon \cdot \eta) = \int_a^b F(x, y + \epsilon \eta, \dot y + \epsilon \dot \eta) ~ dx
 \]
 
-We can evaluate the \emph{derivative} of $\phi$ at 0.  We know, however, that there must be a stationary point at $\epsilon = 0$, which leads us to the inevitable conclusion that we must relinquish ourselves to the greedy clutches of algebra, and evaluate $\frac{d\phi}{d\epsilon}$ at 0.
+We can evaluate the \emph{derivative} of $\phi$ at 0.  We know, however, that there must be a stationary point at $\epsilon = 0$, which leads us to the inevitable conclusion that we must relinquish ourselves to the greedy clutches of algebra, and evaluate $\frac{d\phi}{d\epsilon}=0$ at $\epsilon=0$.
 
 After some simplification, this evaluation becomes:
 \[
@@ -198,9 +199,9 @@ The constants $C_1$ and $C_2$ are really just the initial velocity and position 
 
 \section{The Brachistochrone Problem} % q3
 
-The brachistochrone curve is simply the curve along which a frictionless particle will slide in the minimum time.  Brachistochrone trajectories are especially interesting in the context of space travel, since they provide the most efficient trajectories with which to traverse long distances.
+The brachistochrone curve is simply the curve along which a frictionless particle will slide in the minimum time. Brachistochrone trajectories are especially interesting in the context of space travel, since they provide the most efficient trajectories with which to traverse long distances. It also has applications in our everyday lives; for example, creating efficient roller coasters, or 
 
-The problem is, specifically, to find the curve $y(x)$ between points $y(a) = A$ and $y(b) = B$, along which a particle will slide in the minimum time.
+The problem is, specifically, to find the curve $y(x)$ between points $y(a) = A$ and $y(b) = B$, along which a particle will slide in the minimum time. We need to find a balance between the speed of the particle and the length of the path. 
 
 Here, we will trace out Johann Bernoulli's solution to the brachistochrone problem, and justify all the steps he took.
 
@@ -271,14 +272,14 @@ Spring-mass systems are very common in physics.  Let us define a system with a s
 
         \node (ground) [ground,anchor=north,yshift=-0.25cm,minimum width=1.5cm] at (M.south) {};
         \draw (ground.north east) -- (ground.north west);
-        \draw [thick] (M.south west) ++ (0.2cm,-0.125cm) circle (0.125cm)  (M.south east) ++ (-0.2cm,-0.125cm) circle (0.125cm);
+        \draw [thick] (M.south west) ++ (0.2cm, -0.125cm) circle (0.125cm)  (M.south east) ++ (-0.2cm, -0.125cm) circle (0.125cm);
 
         \node (wall) [ground, rotate=-90, minimum width=3cm,yshift=-3cm] {};
         \draw (wall.north east) -- (wall.north west);
 
-        \draw [decorate, decoration = {coil, segment length=4pt}] (wall.east) ++ (0.15cm, 1.5cm) -- (M.west);
+        \draw [decorate, decoration = {coil, segment length=4pt}] (wall.east) ++ (0.15cm, 1.5cm) -- (M.west) node [midway, below = 4pt, draw = none] {$k$};
 
-        \draw [-latex,ultra thick] (M.east) ++ (0.2cm,0) -- +(1cm,0) node [right, draw = none,] {$x$};
+        \draw [-latex, thick] (M.east) ++ (0.2cm, 0) -- +(1cm, 0) node [right, draw = none,] {$x$};
 
     \end{tikzpicture}
     \caption{A single-spring, single-mass system.}
@@ -293,7 +294,7 @@ From this, we can directly solve for the Euler-Lagrange equations:
   &⟹ m\ddot x + kx = 0\\
 \end{align*}
 
-This last expression is the differential equation which governs spring motion.  If we choose a mass of 1 kg, and a spring constant of
+This last expression is the differential equation which governs spring motion.  
 
 \section{Generalising the Lagrangian: Degrees of Freedom} % q6
 
@@ -322,7 +323,7 @@ Differentiating the perturbed functional $\phi(\epsilon)$, with respect to $\eps
     \frac{d\phi}{d\epsilon} = \left.\frac{d J(t,x+\epsilon n_x, y+\epsilon n_y,x'+\epsilon n'_x,y'+\epsilon n'_y)}{d\epsilon}\right|_{\epsilon=0}
 \]
 
-Solving this algebraically, we can derive this to be:
+We can derive this to be:
 
 \begin{align*}
     &= \int_a^b \left(\frac{\partial F}{\partial x}n_x + \frac{\partial F}{\partial x'}n_x' + \frac{\partial F}{\partial y}n_y + \frac{\partial F}{\partial y'}n_y'\right)dt\\
@@ -398,7 +399,7 @@ This result is the same one would get from analyzing the system using $F=ma$. Th
 \begin{figure}[ht!]
     \centering
     \includegraphics{3spring2mass.pdf}
-    \caption{A timeseries view of the three-spring, two-mass system.}
+    \caption{A timeseries view of the three-spring, two-mass system with initial condition $x_1=0,\dot{x}_1=-1,x_2=0,\dot{x}_2=-5$.}
     \label{fig: tstm}
 \end{figure}
 
@@ -412,7 +413,7 @@ Then the total time taken can be calculated by
 \[T = \int_P \frac{ds}{c(x,y)} = \int_P \frac{\sqrt{x'^2+y'^2}dt}{c(x,y)} = \int_PF(t,x,x',y,y')dt\]
 \[\text{ where }F(t,x,x',y,y') = \frac{\sqrt{x'^2+y'^2}}{c(x,y)}\]
 
-Carry out the derivation for the curve $x(t)$.
+Solving the Euler-Lagrange equation for the curve $x(t)$.
 \[\frac{\partial F}{\partial x} = \sqrt{x'^2+y'^2}\frac{\partial}{\partial x}\frac{1}{c(x,y)} = -\frac{\sqrt{x'^2+y'^2}}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}\]
 
 use the fact that $x' = \frac{dx}{dt}$
@@ -424,50 +425,71 @@ We can convert the independent variable form t to s by multiplying both side of 
 Using chain rule and the fact that $ds = (x'^+y'^2)^{\frac{1}{2}} dt$:
 \[\frac{d}{d t} \frac{\partial F}{\partial x'} \frac{dt}{ds} = \frac{dt}{ds}\frac{d}{dt} \frac{dx}{c(x,y)\sqrt{x'^2+y'^2}dt} = \frac{d}{ds}\frac{dx}{c(x,y)ds}\].
 
-The exact same procedure can be carry out on $y(t)$ curve, which together would yield the following system:
+The exact same procedure can be carry out on the $y(t)$ curve, which together would yield the following system:
 \begin{align*}
 \frac{d}{ds}\frac{1}{c(x,y)}\frac{dx}{ds} &= -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial x}\\
 \frac{d}{ds}\frac{1}{c(x,y)}\frac{dy}{ds} &= -\frac{1}{c(x,y)^2}\frac{\partial c(x,y)}{\partial y}
 \end{align*}
-In fact, the system can be generalized into
+In fact, the system can be generalized into:
+
 \[\frac{d}{ds} \frac{1}{c(\vec{r})}\frac{d\vec{r}}{ds} = -\frac{1}{c(\vec{r})^2}\nabla c(\vec{r})\]
+
 Where $\vec{r}$ is the position vector of the object and $\nabla$ is the gradient operator, the expression describe a n-equation system component wise.\\
 Taking $\vec{r} = (x,y)$ would yield the result derived above.\\
 
 Let's consider ray propagation in a Gradient index (GRIN) medium such as the lens in our eye. Assume the medium is a cylinder shape, the speed of light (i.e. refractive index) varies based on distance from the central optical axis:
 \[c = \frac{c_0}{a\sqrt{1-(cr)^2}}\]
-where $r$ is radius in cylindrical coordinate, and $a,b$ are arbitrary constants, and $c_0$ is the speed of light in vacuum.
+where $r$ is radius in cylindrical coordinate, $a$ is the refractive index at the optical axis, $c$ is an arbitrary constant, and $c_0$ is the speed of light in vacuum. Since speed of light is very fast, we will make the assumption that $r << 1$ and thus $ds = dz$.
 
-Choosing s = z (we are interested in the distance from the center as the ray propagate further into the cylinder, i.e. $r(z)$), the ray equation describes that:
+The parameter of interest is the radial distance from the axis as the ray propagate further into the cylinder, i.e. $r(z)$, the Euler-Lagrange equation then describes:
 \begin{align*}
-    \frac{d}{dz} \frac{a\sqrt{1-(cr)^2}}{c_0}\frac{d r}{dz} &= -\frac{a^2(1-(cr)^2)}{c_0^2}\nabla \frac{c_0}{a\sqrt{1-(cr)^2}}\\
-    \frac{a\sqrt{1-(cr)^2}}{c_0}\frac{d^2 r}{dz^2} &= -\frac{a(1-(cr)^2)}{c_0}\frac{\partial}{\partial r} \frac{1}{\sqrt{1-(cr)^2}}\\
-    \sqrt{1-(cr)^2}\frac{d^2 r}{dz^2} &= -(1-(cr)^2)\frac{\partial}{\partial r} \frac{1}{\sqrt{1-(cr)^2}}\\
-    \frac{d^2 r}{dz^2} &= -\sqrt{1-(cr)^2} \frac{b^2r}{(1-(cr)^2)^{\frac{3}{2}}}\\
-    \frac{d^2 r}{dz^2} &= -\frac{b^2r}{(1-(cr)^2)}\\
+    \frac{d}{dz} \frac{a\sqrt{1-(cr)^2}}{c_0}\frac{d r}{dz} &= -\frac{a^2(1-(cr)^2)}{c_0^2}\frac{\partial}{\partial r} \frac{c_0}{a\sqrt{1-(cr)^2}}\\
+    - \frac{ac^2 r}{c_0\sqrt{1-(cr)^2}}\frac{dr}{dz}+\frac{a\sqrt{1-(cr)^2}}{c_0}\frac{d^2 r}{dz^2} &= -\frac{a(1-(cr)^2)}{c_0}\frac{\partial}{\partial r} \frac{1}{\sqrt{1-(cr)^2}}\\
+    \sqrt{1-(cr)^2}\frac{d^2 r}{dz^2} &= -(1-(cr)^2)\frac{\partial}{\partial r} \frac{1}{\sqrt{1-(cr)^2}} + \frac{c^2 r}{\sqrt{1-(cr)^2}}\frac{dr}{dz}\\
+    \frac{d^2 r}{dz^2} &= -\sqrt{1-(cr)^2} \frac{c^2r}{(1-(cr)^2)^{\frac{3}{2}}}+ \frac{c^2 r}{{1-(cr)^2}}\frac{dr}{dz}\\
+    \frac{d^2 r}{dz^2} &= -\frac{c^2r}{(1-(cr)^2)}\left(1-\frac{dr}{dz}\right)\\
 \end{align*}
 
-This is a second order autonomous differential equation. We can simply the express by assuming $cr<<1$, the ODE then reduce to a simple \textit{second order linear homogeneous non-constant coefficient differential equation}, which we know the answer already:
+This is a second order autonomous differential equation. The previous approximation can be extended to $\dot{r},cr<<1$, the ODE then reduce to a simple \textit{second order linear homogeneous non-constant coefficient differential equation}, which we know the answer already:
 \begin{align*}
-    \frac{d^2 r}{dz^2} &= -\frac{b^2r}{(1-(cr)^2)}\\
-    &\approx -b^2 r\\
+    \frac{d^2 r}{dz^2} &= -\frac{c^2r}{(1-(cr)^2)}\left(1-\frac{dr}{dz}\right)\\
+    &\approx -c^2 r\\
     \implies r(z) &= A\cos(cz)+B\sin(cz)
 \end{align*}
-Solving for the initial condition where the light enter at position $a$ with a slope of $b$
+Solving for the initial condition where the light enter at position $\alpha$ with a slope of $\beta$
 \begin{align*}
-    r(0) &= A\cos(c0)+B\sin(c0) = a \\
-    &\implies A = a\\
-    r'(0) &= -cA\sin(c0)+cB\cos(c0) = b \\
-    &\implies B = \frac{b}{c}\\
-    r(z) &= a\cos(cz)+\frac{b}{c}\sin(cz)
+    r(0) &= A\cos(c0)+B\sin(c0) = \alpha \\
+    &\implies A = \alpha\\
+    r'(0) &= -cA\sin(c0)+cB\cos(c0) = \beta \\
+    &\implies B = \frac{\beta}{c}\\
+    r(z) &= \alpha\cos(cz)+\frac{\beta}{c}\sin(cz)
 \end{align*}
 
-The ray oscillates back and forth across the optical axis.
+The ray oscillates back and forth across the optical axis, as shown in Figure 5, where the light enters the cylinder at $z=0$, and a lighter color indicating a faster speed of light. Both light, despite entering at different $r$ value, meet at the same $z$ when they reach $r = 0$. This property allows the GRIN medium to be a great candidate as a lens. In fact this is how human eyes, which is a GRIN material, focus the light for further object, as the light entering is essentially perpendicular to our eyes, the eye muscle shapes the lens into cylindrical shape to focus light into our receptor.
 
 \begin{figure}
     \includegraphics{rays.pdf}
-    \caption{raytracing}
+    \caption{Two rays of light enter into the nonlinear medium, and exhibit sinusoidal oscillations.}
     \label{fig: rays}
 \end{figure}
+
+\begin{figure}
+    \begin{subfigure}{.5\textwidth}
+      \includegraphics[width=.9\linewidth]{ray_comp.pdf}
+      \caption{Light Entering straight}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+      \includegraphics[width=.9\linewidth]{ray_comp_angled.pdf}
+      \caption{Light Entering in an angle}
+    \end{subfigure}
+    \caption{Comparison between approximated solution and numerical solution to the original ODE.\\$\qquad\qquad$Blue is approximation, Orange is numerical}
+    \label{fig: ray_comp}
+\end{figure}
+
+Figure 6 shows a comparison between the approximated result (in Blue) and the solution to the original equation by numerical method (in Orange), again the light enters the cylinder at $z=0$. The two line very closely overlap for light entering straight and in an angle, hence a valid approximation for $cr << 1$.
+
+\section{Conclusion}
+
+The Euler-Lagrange equations are powerful tools to solve messy, physical systems.
 
 \end{document}
