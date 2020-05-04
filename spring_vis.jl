@@ -62,57 +62,6 @@ function energy(resid, u, p, t)
 end
 
 
-trange = (0.0, 80.0)
-prob = ODEProblem(
-    springmass,
-    [0.0, -1.0, 0.0, -5.0],
-    trange,
-    p = [40.0, 10.0, 40.0, 1.0, 1.0],
-    # callback = ManifoldProjection(energy)
-)
-
-# Parameter sets:
-# The integrator bugs out at
-# p = [40.0, 10.0, 40.0, 1.0, 1.0],
-# at least at the initial stages.
-sol = solve(prob, Tsit5(); save_idxs = [1, 2])
-
-# import Plots
-#
-Plots.plot(sol; vars = (1, 2))
-Plots.plot(sol; vars = [1, 2])
-
-
-
-
-scene, layout = layoutscene(5, resolution = (200, 170), font = "CMU Serif Roman")
-ax = layout[1, 1]  = LAxis(scene)
-ax.xlabel = "𝑡"
-ax.ylabel = "𝑥"
-ax.xticklabelpad = 2
-ax.yticklabelpad = 2
-ax.xlabelpadding = 0
-ax.ylabelpadding = 0
-
-lines!(ax, sol.t, sol[1, :]; color = AbstractPlotting.wong_colors[2], linewidth = .5)
-lines!(ax, sol.t, sol[2, :]; color = AbstractPlotting.wong_colors[1], linewidth = .5)
-
-leg = layout[2, 1] = LLegend(
-    scene,
-    ax.scene.plots,
-    ["𝑥1", "𝑥2"];
-    tellwidth = false, rowgap = 0.0,
-    framewidth = 0, padding = (0,0,0,0),
-    patchlabelgap = 3, patchsize = (5, 5),
-    linewidth = 1
-)
-
-rowsize!(layout, 2, Fixed(20))
-rowgap!(layout, 0)
-save("3spring2mass.pdf", scene)
-
-
-## MTK experimentation
 (t, (k₁, k₂, k₃), (m₁, m₂)) = @parameters t k[1:3] m[1:2]
 (x₁, x₂), = @variables x[1:2](t)
 @derivatives D'~t
@@ -143,6 +92,41 @@ tspan = (0.0, 5.0)
 
 prob = ODEProblem(sys, u0, tspan, p)
 
-sol = @benchmark solve(prob, Vern9())
+sol = solve(prob, Vern9())
 
+
+
+
+scene, layout = layoutscene(5, resolution = (200, 170), font = "CMU Serif Roman")
+ax = layout[1, 1]  = LAxis(scene)
+ax.xlabel = "𝑡"
+ax.ylabel = "𝑥"
+ax.xticklabelpad = 2
+ax.yticklabelpad = 2
+ax.xlabelpadding = 0
+ax.ylabelpadding = 0
+
+trange = LinRange(tspan..., 1000)
+data = sol(trange)
+
+lines!(ax, trange, data[1, :]; color = AbstractPlotting.wong_colors[2], linewidth = .5)
+lines!(ax, trange, data[2, :]; color = AbstractPlotting.wong_colors[1], linewidth = .5)
+
+leg = layout[2, 1] = LLegend(
+    scene,
+    ax.scene.plots,
+    ["𝑥1", "𝑥2"];
+    tellwidth = false, rowgap = 0.0,
+    framewidth = 0, padding = (0,0,0,0),
+    patchlabelgap = 3, patchsize = (10, 10),
+    linewidth = 1,
+    orientation = :horizontal,
+)
+
+rowsize!(layout, 2, Fixed(20))
+rowgap!(layout, 0)
+save("3spring2mass.pdf", scene)
+
+
+## MTK experimentation
 Plots.plot(sol; vars = [:x₁, :x₂])
