@@ -87,31 +87,39 @@ eqs = [
 sys = ode_order_lowering(ODESystem(eqs, t, [x₁, x₂], [k₁, k₂, k₃, m₁, m₂]))
 
 u0 = [
-    sys.x₁ => -1.0,
-    sys.x₂ =>  1.0,
-    sys.x₁ˍt => 5,
-    sys.x₂ˍt => 0.0,
+    x₁ => -1.0,
+    x₂ =>  1.0,
+    D(x₁) => 5,
+    D(x₂) => 0.0,
 ]
 
 p = [
-    sys.m₁ => 1.0,
-    sys.m₂ => 1.0,
-    sys.k₁ => 40.0,
-    sys.k₂ => 40.0,
-    sys.k₃ => 40.0,
+    m₁ => 1.0,
+    m₂ => 1.0,
+    k₁ => 40.0,
+    k₂ => 40.0,
+    k₃ => 40.0,
 ]
 
+function energy(resid, u, p, t)
+    m₁, m₂, k₁, k₂, k₃ = p
+    x₁, ẋ₁, x₂, ẋ₂ = u
+    # This is the Lagrangian, which must be kept at 0.
+    resid[1] = (m₁ * ẋ₁^2 + m₂ * ẋ₂^2)/2 - (k₁ * x₁^2 + k₃ * x₂^2 - k₂ * (x₂ - x₁)^2)
+    resid[2] = 0
+    resid[3] = 0
+    resid[4] = 0
+end
 tspan = (0.0, 10.0)
 
-prob = ODEProblem(sys, u0, tspan, p)
+prob = ODEProblem(sys, u0, tspan, p; cb = ManifoldProjection(energy))
 
 sol = solve(prob, Vern9())
 
 plot_spring_sol(sol)
 
-function energy(resid, u, p, t)
-end
 
+solve(prob, Vern9(); cb = ManifoldProjection(energy))
 scene, layout = layoutscene(5, resolution = (200, 170), font = "CMU Serif Roman")
 ax = layout[1, 1]  = LAxis(scene)
 ax.xlabel = "𝑡"
